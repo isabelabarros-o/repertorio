@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Login</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/autenticacao.css' %}">
+</head>
+
+<body>
+  <div class="film-grain"></div>
+  
+  <div class="spotlight spotlight-1"></div>
+  <div class="spotlight spotlight-2"></div>
+  
+  <div class="login-container">
+    <div class="cinema-header">
+      <div class="film-strip">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <h1>REPERTÓRIO<br/></h1>
+      <div class="film-strip">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+    
+    <div class="subtitle">Se cadastre ou faça login</div>
+    
+    <form action="/" method="POST">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="usuario">E-MAIL</label>
+        <input type="text" name="usuario" id="usuario" placeholder="seu@email.com">
+      </div>
+
+      <div class="form-group">
+        <label for="senha">SENHA</label>
+        <input type="password" name="senha" id="senha" placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="cta-button">
+        <span class="button-text">ENTRAR</span>
+        <span class="button-arrow">→</span>
+      </button>
+      
+      <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+    </form>
+    
+    <div class="cinema-footer">
+      <div class="recording-indicator">
+        <span class="rec-dot"></span>
+        <span class="rec-text">RECORDING IN PROGRESS</span>
+      </div>
+    </div>
+  </div>
+  
+  {% if mensagem %}
+    <div class="alert-danger" role="alert">
+      <span class="alert-icon">⚠</span>
+      {{ mensagem }}
+    </div>
+  {% endif %}
+</body>
+</html>

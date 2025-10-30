@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.jpg' %}"/>
+
+    <title>{% block titulo %} Desenvolvimento webmobile {% endblock %}</title>
+
+    <!-- <CHANGE> Added Google Fonts for cinema typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <link type="text/css" rel="stylesheet" href="{% static 'bootstrap-5.3.8/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- <CHANGE> Added custom cinema cult CSS after Bootstrap to override styles -->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script type="text/javascript" src="{% static 'bootstrap-5.3.8/js/bootstrap.bundle.min.js' %}"></script>
+
+    {% block css_local %}{% endblock %}
+    {% block javascript_local %}{% endblock %}
+</head>
+
+<body>
+    <!-- <CHANGE> Added film grain overlay for cinema effect -->
+    <div class="film-grain"></div>
+    
+    <div id="menu-superior">
+        {% block menu_superior %}
+        <div class="container">
+            <!-- <CHANGE> Added cinema-header class and film strip decoration -->
+            <div class="cinema-header">
+                <div class="film-strip"></div>
+                <span class="recording-indicator">● REC</span>
+            </div>
+            
+            <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li>
+                    <a href="/repertorio" class="nav-link px-2">
+                        Meu Repertório
+                    </a>
+                </li>
+                <li>
+                    <a href="/repertorio/novo" class="nav-link px-2">
+                        Novo Repertório
+                    </a>
+                </li>
+              </ul>
+              <div class="col-md-3 text-end">
+                <a href="/logout" type="button" class="btn btn-cinema position-relative">
+                    Logout
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-cinema">
+                        {{user}}
+                    </span>
+                </a>
+              </div>
+            </header>
+          </div>
+        {% endblock %}
+    </div>
+
+    <div id="conteudo">
+        {% block conteudo %}{% endblock %}
+    </div>
+    
+    <!-- <CHANGE> Added spotlight effects for dramatic cinema lighting -->
+    <div class="spotlight spotlight-1"></div>
+    <div class="spotlight spotlight-2"></div>
+</body>
+</html>
