@@ -1,5 +1,6 @@
 from django.db import models
 from repertorio.consts import OPCOES_ESTRELA
+from datetime import datetime
 # Create your models here.
 class Repertorio(models.Model):
 
@@ -28,3 +29,7 @@ class Repertorio(models.Model):
         blank=True,
         help_text="Número da temporada (apenas se for série)."
     )
+
+    @property
+    def repertorio_ano(self):
+        return self.data.year == datetime.now().year

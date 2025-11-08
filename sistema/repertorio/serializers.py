@@ -5,6 +5,7 @@ class SerializadorRepertorio(serializers.ModelSerializer):
     """
     Serializador para o modelo Veículo
     """
+    
     class Meta:
         model = Repertorio
         exclude = []  

@@ -2,6 +2,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from django.shortcuts import render, redirect
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
 class Login(View):
     """
@@ -11,7 +14,7 @@ class Login(View):
     def get(self,request):
         contexto = {}
         if request.user.is_authenticated:
-            return redirect("/repertorio")
+            return redirect("/veiculo")
         else:
             return render(request, 'autenticacao.html', contexto)
     
@@ -36,3 +39,23 @@ class Logout(View):
     def get(self,request):
         logout(request)
         return redirect("/")
+    
+class LoginAPI(ObtainAuthToken):
+    """
+    View para autenticação via API REST.
+    """
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'id': user.id,
+            'nome': user.first_name,
+            'email': user.email,
+            'token': token.key
+        
+        })

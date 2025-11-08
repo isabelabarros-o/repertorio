@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block titulo %} Edição do veículo {{ object.modelo }} {% endblock %}
+
+{% block conteudo %}
+<form action="/veiculo/editar/{{ object.pk }}/" method="post" enctype="multipart/form-data" class="container mt-4">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-6">
+        <label for="marca" class="form-label">Marca</label>
+        {{ form.marca }}
+    </div>
+    <div class="col-6">
+        <label for="modelo" class="form-label">Modelo</label>
+        {{ form.modelo }}
+    </div>
+    <div class="col-6">
+        <label for="cor" class="form-label">Cor</label>
+        {{ form.cor }}
+    </div>
+    <div class="col-6">
+        <label for="ano" class="form-label">Ano</label>
+        {{ form.ano }}
+    </div>
+    <div class="col-6">
+        <label for="combustivel" class="form-label">Combustível</label>
+        {{ form.combustivel }}
+    </div>
+    <div class="col-6">
+        <label for="foto" class="form-label">Foto</label>
+        {{ form.foto }}
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+{% endblock %}

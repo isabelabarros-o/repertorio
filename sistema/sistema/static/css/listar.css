@@ -1,0 +1,176 @@
+
+<style>
+/* ----- GERAL E CABEÇALHO ----- */
+body {
+    background-color: #F5F0EA; /* Cor de fundo bege claro da página */
+    color: #10224F;            /* Cor de texto padrão (azul escuro) */
+    font-family: 'Inter', sans-serif;
+}
+
+/* Ajusta o header que vem do base.html */
+header {
+    border-bottom: 1px solid #EAEAEA;
+    background-color: #F5F0EA;
+}
+
+.nav-link {
+    color: #3B507C !important; /* Cor dos links do menu */
+    font-weight: 500;
+}
+
+/* Botão de Logout */
+.col-md-3 .btn-secondary {
+    background-color: #10224F !important;
+    border: none;
+    border-radius: 20px;
+    font-weight: 600;
+    padding: 6px 16px;
+
+    /* --- ADIÇÕES PARA GARANTIR QUE O TEXTO APAREÇA --- */
+    color: white !important;      /* Força a cor do texto para branco */
+    font-size: 1rem !important;   /* Força um tamanho de fonte visível (16px) */
+}
+
+/* Badge "Admin" */
+.btn-secondary .badge {
+    background-color: #E0C590 !important; /* Cor de fundo amarela */
+    color: #192A51 !important;            /* Cor do texto */
+    top: 110% !important;                 /* Posiciona abaixo do botão */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+
+/* ----- ÁREA DE BUSCA ----- */
+.busca {
+    background: transparent; /* Remove o fundo cinza da busca */
+    padding: 0;
+}
+
+.busca input[type="text"].form-control {
+    background-color: #F4F1EA; /* Cor de fundo do campo de pesquisa */
+    border: 1px solid #E0D9CE;
+    border-radius: 8px;
+    color: #192A51;
+    padding: 10px 15px;
+}
+
+.busca input[type="text"].form-control::placeholder {
+    color: #6c757d; /* Cor do placeholder */
+}
+
+.busca .btn-primary {
+    background-color: #10224F; /* Cor do botão "Procurar" */
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+/* ----- QUANTIDADE DE VEÍCULOS ----- */
+p.fw-semibold {
+    color: #192A51;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Transforma o badge numérico em texto normal */
+p.fw-semibold .badge {
+    background-color: transparent !important;
+    color: inherit !important;
+    font-size: inherit;
+    font-weight: inherit;
+    padding-left: 5px;
+}
+
+/* ----- CARD DE VEÍCULO ----- */
+.card {
+    background-color: #F5F0EA; /* Cor de fundo do card */
+    border-radius: 20px;
+    border: 1px solid #E0D9CE;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    overflow: hidden; /* Garante que elementos internos respeitem a borda */
+    padding: 2rem !important;
+    height: auto; /* Altura automática */
+}
+/* Bloco da imagem placeholder */
+.card .bg-light.text-secondary {
+    background-color: #D9D9D9 !important; /* Cor cinza do placeholder */
+    color: transparent !important;        /* Esconde o texto original "Veículo sem foto" */
+    font-size: 0;                         /* Garante que o texto suma */
+    position: relative;
+    height: 120px !important;             /* Altura da imagem */
+    width: 100%;
+    max-width: 200px;
+}
+
+/* Adiciona o texto "Foto do Veículo" via CSS */
+.card .bg-light.text-secondary::before {
+    content: "Foto do Veículo";
+    color: #585858;
+    font-size: 1rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Título (Modelo e Marca) */
+.card-title {
+    color: #10224F; /* Cor da MARCA */
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: left;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+/* Detalhes do veículo (Ano, Cor, etc.) */
+.card-body p {
+    text-align: left;
+    color: #192A51;
+    margin-bottom: 0.1rem;
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+/* Botões de Ação (Editar e Apagar) */
+.card .text-md-end {
+    display: flex;
+    justify-content: flex-end; /* Alinha os botões à direita */
+    gap: 0.75rem; /* Espaçamento entre os botões */
+    align-items: center;
+}
+
+/* Estilo comum para os dois botões */
+.btn-outline-primary, .btn-outline-danger {
+    border-radius: 6px;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+}
+
+/* Adiciona os ícones usando Font Awesome (que já está no base.html) */
+.btn-outline-primary::before, .btn-outline-danger::before {
+    display: none; /* Esconde os ícones que eram para os botões redondos */
+}
+
+/* Botão de Editar */
+.btn-outline-primary {
+    background-color: #EAC88B !important; /* Cor amarela do botão */
+}
+.btn-outline-primary::before {
+    content: '';
+}
+
+/* Botão de Apagar */
+.btn-outline-danger {
+    background-color: #D67474 !important; /* Cor vermelha do botão */
+    color: white !important;
+}
+.btn-outline-danger::before {
+    content: '';
+}
+</style>

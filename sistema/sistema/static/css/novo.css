@@ -1,0 +1,128 @@
+
+    /* Coloque este código no seu arquivo static/css/base.css ou em um novo arquivo */
+
+/* === ESTILOS GERAIS === */
+body {
+    background-color: #f8f6f2; /* Cor de fundo creme da imagem */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* === CABEÇALHO E NAVEGAÇÃO === */
+#menu-superior header {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 2rem !important;
+}
+
+#menu-superior .nav-link {
+    color: #444c6c; /* Azul escuro para os links */
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+#menu-superior .btn-secondary {
+    background-color: #444c6c;
+    border-color: #444c6c;
+    color: white;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+#menu-superior .btn-secondary .badge {
+    background-color: #FBC02D !important; /* Amarelo/Dourado para a badge 'Admin' */
+    color: #333 !important;
+}
+
+/* === FORMULÁRIO DE CADASTRO === */
+
+/* Transforma o formulário em um grid de 2 colunas */
+form.container {
+    position: relative;
+    padding-top: 50px; /* Espaço para o título que será adicionado via CSS */
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas de largura igual */
+    gap: 0 3rem; /* Espaço entre as colunas */
+    align-items: start;
+}
+
+/* Adiciona o título "Cadastre seu veículo:" usando um pseudo-elemento */
+form.container::before {
+    content: "Cadastre seu veículo:";
+    position: absolute;
+    top: 0;
+    left: 12px; /* Alinha com o preenchimento do container do Bootstrap */
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* --- Coluna da Esquerda (Campos do Formulário) --- */
+
+/* O container dos campos ocupará a primeira coluna do grid */
+form.container .row {
+    grid-column: 1 / 2;
+    display: flex;
+    flex-direction: column; /* Empilha os campos verticalmente */
+}
+
+/* Força cada campo a ocupar 100% da largura da coluna da esquerda */
+form.container .row .col-6 {
+    width: 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Estilo das labels (Marca, Modelo, etc.) */
+.form-label {
+    color: #444c6c;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+/* Estilo dos campos de input e select */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    height: 48px;
+    background-color: #fff;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #444c6c;
+    box-shadow: 0 0 0 0.2rem rgba(68, 76, 108, 0.25);
+}
+
+/* --- Coluna da Direita (Foto) --- */
+
+/* Adiciona o quadro "Foto do Veículo" usando um pseudo-elemento */
+form.container::after {
+    content: "Foto do Veículo";
+    grid-column: 2 / 3; /* Ocupa a segunda coluna do grid */
+    grid-row: 1 / 3; /* Ocupa o espaço vertical dos campos e do botão */
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: #e9e9e9;
+    color: #6c757d;
+    border-radius: 8px;
+    width: 100%;
+    min-height: 250px;
+    align-self: center; /* Centraliza verticalmente na sua área */
+}
+
+/* --- Botão Salvar --- */
+
+/* Posiciona o botão na coluna da esquerda, abaixo dos campos */
+form button[type="submit"] {
+    grid-column: 1 / 2;
+    background-color: #444c6c;
+    border-color: #444c6c;
+    border-radius: 25px; /* Deixa o botão arredondado */
+    padding: 10px 40px;
+    font-weight: bold;
+    width: auto; /* Largura automática baseada no conteúdo */
+    justify-self: start; /* Alinha o botão à esquerda */
+    margin-top: 1rem;
+}

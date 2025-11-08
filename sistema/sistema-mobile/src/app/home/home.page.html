@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Veículos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Veículos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div *ngIf="!lista_veiculos || lista_veiculos.length === 0" class="ion-padding ion-text-center">
+    <ion-text color="medium">
+      <p>Nenhum veículo cadastrado no momento.</p>
+    </ion-text>
+  </div>
+
+  <ion-list *ngIf="lista_veiculos && lista_veiculos.length > 0">
+    
+    <ion-item-sliding *ngFor="let veiculo of lista_veiculos">
+      
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <img *ngIf="veiculo.foto; else placeholder" [src]="veiculo.foto" alt="Foto do veículo" />
+          
+          <ng-template #placeholder>
+            <div class="placeholder-foto">
+              <ion-icon name="car-sport-outline" color="medium"></ion-icon>
+            </div>
+          </ng-template>
+        </ion-thumbnail>
+
+        <ion-label>
+          <h2>{{ veiculo.marca }} {{ veiculo.modelo }}</h2>
+          <p>Ano: {{ veiculo.ano }} | Cor: {{ veiculo.cor }}</p>
+          <p>{{ veiculo.combustivel }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="excluirVeiculo(veiculo.id)">
+          Excluir
+        </ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>

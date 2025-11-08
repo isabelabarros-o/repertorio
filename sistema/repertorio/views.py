@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from repertorio.serializers import SerializadorRepertorio
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView
 
 class MeuRepertorio(LoginRequiredMixin, ListView):
     model = Repertorio
@@ -54,6 +54,17 @@ class DeletarRepertorio(LoginRequiredMixin, DeleteView):
 class APIListarRepertorio(ListAPIView):
     '''
     View para listar os veículos (por meio da API REST).
+    '''
+    serializer_class = SerializadorRepertorio
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Repertorio.objects.all()
+    
+class APIDeletarRepertorio(DestroyAPIView):
+    '''
+    View para deletar um veículo (por meio da API REST).
     '''
     serializer_class = SerializadorRepertorio
     authentication_classes = [TokenAuthentication]
