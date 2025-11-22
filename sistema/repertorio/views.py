@@ -21,7 +21,7 @@ class CriarRepertorio(LoginRequiredMixin, CreateView):
     model = Repertorio
     form_class = FormularioRepertorio
     template_name = 'repertorio/novo.html'
-    success_url = reverse_lazy('meu_repertorio')
+    success_url = reverse_lazy('meu-repertorio')
 
 class FotoRepertorio(View):
     def get(self, request, arquivo):
@@ -29,10 +29,10 @@ class FotoRepertorio(View):
             repertorio = Repertorio.objects.get(foto='repertorio/fotos/{}'.format(arquivo))
             return FileResponse(repertorio.foto)
         except ObjectDoesNotExist:
-                raise Http404("Veículo não possui foto.")
+                raise Http404("Repertório não possui foto.")
         except Exception as exception:
             raise exception
-        
+
 class EditarRepertorio(LoginRequiredMixin, UpdateView):
     """
     View para editar um veículo existente.
@@ -40,7 +40,7 @@ class EditarRepertorio(LoginRequiredMixin, UpdateView):
     model = Repertorio
     form_class = FormularioRepertorio
     template_name = 'repertorio/editar.html'
-    success_url = reverse_lazy('listar-repertorio')
+    success_url = reverse_lazy('meu-repertorio')
 
 class DeletarRepertorio(LoginRequiredMixin, DeleteView):
     '''
@@ -48,7 +48,7 @@ class DeletarRepertorio(LoginRequiredMixin, DeleteView):
     '''
     model = Repertorio
     template_name = 'repertorio/deletar.html'
-    success_url = reverse_lazy('listar-repertorio')
+    success_url = reverse_lazy('meu-repertorio')
 
 
 class APIListarRepertorio(ListAPIView):

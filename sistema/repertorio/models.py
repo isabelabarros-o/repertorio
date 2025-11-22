@@ -29,6 +29,7 @@ class Repertorio(models.Model):
         blank=True,
         help_text="Número da temporada (apenas se for série)."
     )
+    foto = models.ImageField(blank=True, null=True, upload_to='repertorio/fotos')
 
     @property
     def repertorio_ano(self):

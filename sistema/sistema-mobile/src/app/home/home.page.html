@@ -2,55 +2,57 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
+      <img src="assets/img/patin_logo.png" alt="logo" class="header-logo">
     </ion-buttons>
-    <ion-title>
-      Veículos
+    <ion-title class="title-accent">
+      Meu Repertório
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="logout()" class="logout-btn" aria-label="Logout">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <span class="logout-name">{{ usuario.nome }}</span>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Veículos</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div *ngIf="!lista_veiculos || lista_veiculos.length === 0" class="ion-padding ion-text-center">
+  <div *ngIf="!lista_repertorio || lista_repertorio.length === 0" class="ion-padding ion-text-center">
     <ion-text color="medium">
-      <p>Nenhum veículo cadastrado no momento.</p>
+      <p>Nenhum repertório cadastrado no momento.</p>
     </ion-text>
   </div>
 
-  <ion-list *ngIf="lista_veiculos && lista_veiculos.length > 0">
-    
-    <ion-item-sliding *ngFor="let veiculo of lista_veiculos">
-      
-      <ion-item>
-        <ion-thumbnail slot="start">
-          <img *ngIf="veiculo.foto; else placeholder" [src]="veiculo.foto" alt="Foto do veículo" />
-          
+  <div class="grid" *ngIf="lista_repertorio && lista_repertorio.length > 0">
+    <div class="grid-item" *ngFor="let item of lista_repertorio">
+      <ion-card class="card">
+        <div class="poster-box">
+          <img *ngIf="item.getFotoUrl() as fotoUrl; else placeholder" [src]="fotoUrl" class="poster-img" alt="Foto do repertório">
           <ng-template #placeholder>
-            <div class="placeholder-foto">
-              <ion-icon name="car-sport-outline" color="medium"></ion-icon>
-            </div>
+            <div class="placeholder">Sem foto</div>
           </ng-template>
-        </ion-thumbnail>
+        </div>
 
-        <ion-label>
-          <h2>{{ veiculo.marca }} {{ veiculo.modelo }}</h2>
-          <p>Ano: {{ veiculo.ano }} | Cor: {{ veiculo.cor }}</p>
-          <p>{{ veiculo.combustivel }}</p>
-        </ion-label>
-      </ion-item>
+        <ion-card-content>
+          <h3 class="card-title">{{ item.nome }}</h3>
+          <p class="muted"><strong>Tipo:</strong> {{ item.get_tipo_display || item.tipo }}</p>
+          <p class="muted"><strong>Data:</strong> {{ item.data ? (item.data | date:'dd/MM/yyyy') : '-' }}</p>
+          <p class="muted"><strong>Estrelas:</strong> {{ item.get_estrela_display || item.estrela }}</p>
+          <ng-container *ngIf="item.tipo == 'SERIE' && item.temporada">
+            <p class="muted"><strong>Temporada:</strong> {{ item.temporada }}</p>
+          </ng-container>
+          <ng-container *ngIf="item.duracao">
+            <p class="muted"><strong>Duração:</strong> {{ formatDuration(item.duracao) }}</p>
+          </ng-container>
+          <p class="muted">{{ item.resenha }}</p>
+        </ion-card-content>
 
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="excluirVeiculo(veiculo.id)">
-          Excluir
-        </ion-item-option>
-      </ion-item-options>
-
-    </ion-item-sliding>
-  </ion-list>
+        <ion-item lines="none">
+          <ion-button fill="clear" color="danger" slot="end" (click)="excluirRepertorio(item.id)">Apagar</ion-button>
+        </ion-item>
+      </ion-card>
+    </div>
+  </div>
 
 </ion-content>

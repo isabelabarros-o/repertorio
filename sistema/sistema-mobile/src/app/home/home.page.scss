@@ -1,27 +1,73 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* Palette from listar.css adapted for mobile */
+:root{
+  --bg: #FBF9F7;
+  --card: #FFFFFF;
+  --muted: #7A8A95;
+  --ink: #16324A;
+  --accent: #8EC5B7;
+  --danger: #E39A8A;
+  --border: #E9E6E2;
+  --shadow: 0 6px 18px rgba(22,50,74,0.06);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-content{ background-color: var(--bg); color: var(--ink); }
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 16px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+.grid-item{ display: block; }
 
-  color: #8c8c8c;
-
-  margin: 0;
+.card{
+  background-color: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: 1rem;
 }
 
-#container a {
-  text-decoration: none;
+.poster-box{
+  width: 100%;
+  aspect-ratio: 27/40;
+  background-color: #F1F3F4; /* light placeholder */
+  border-radius: 8px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+
+.poster-img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:8px; }
+
+.placeholder{ color: #96A1A6; font-size:0.95rem; }
+
+.card-title{ color: var(--ink); font-weight:700; font-size:1.05rem; margin-bottom:0.25rem; }
+.muted{ color: var(--muted); margin-bottom:0.25rem; font-size:0.95rem; }
+
+@media (max-width: 576px){
+  .grid{ gap:12px; padding:12px; }
+  .card{ padding:0.75rem; }
+}
+
+/* Header button contrast fix */
+ion-header ion-toolbar ion-buttons[slot="end"] ion-button {
+  --background: #8EC5B7;
+  --color: #F1F3F4;
+}
+
+.logout-btn { display:flex; align-items:center; gap:6px; }
+.logout-btn ion-icon{ color: var(--ink); }
+.logout-btn span{ color: var(--ink); font-weight:600; }
+/* force toolbar button visible and above other elements */
+ion-header ion-toolbar .logout-btn { z-index: 20; }
+ion-header ion-toolbar .logout-btn ion-icon { font-size: 20px; }
+.logout-name { margin-left: 8px; color: var(--ink); }
+/* header logo */
+.header-logo{ height:34px; width:auto; margin-left:8px; margin-right:8px; }
+
+.title-accent, ion-title.title-accent {
+  color:  #8EC5B7 !important;
+  font-weight: 700;
 }

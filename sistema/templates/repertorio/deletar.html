@@ -13,14 +13,14 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        Você tem certeza que deseja apagar o veículo <strong>{{ object.get_marca_display }} {{ object.modelo }}</strong> com placa <strong>{{ object.placa|default:"não informada" }}</strong>?
+                        Você tem certeza que deseja apagar esse post?
                     </p>
                     <p class="text-danger">Esta ação não pode ser desfeita.</p>
                     
                     <form method="post">
                         {% csrf_token %}
                         <div class="d-flex justify-content-between">
-                            <a href="{% url 'listar-veiculos' %}" class="btn btn-secondary">Cancelar</a>
+                            <a href="{% url 'listar-repertorio' %}" class="btn btn-secondary">Cancelar</a>
                             <button type="submit" class="btn btn-danger">Sim, apagar</button>
                         </div>
                     </form>

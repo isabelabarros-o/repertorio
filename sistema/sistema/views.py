@@ -14,7 +14,7 @@ class Login(View):
     def get(self,request):
         contexto = {}
         if request.user.is_authenticated:
-            return redirect("/veiculo")
+            return redirect("/repertorio")
         else:
             return render(request, 'autenticacao.html', contexto)
     

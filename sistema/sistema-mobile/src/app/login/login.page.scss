@@ -1,0 +1,56 @@
+/* Login page styles adapted from web autenticacao.css */
+:root {
+  --auth-logo-max: 500px;
+  --auth-logo-mobile: 180px;
+}
+
+.login-page {
+  --ion-background-color: #FBF9F7;
+}
+
+.login-container {
+  background: #FFFFFF;
+  border: 1px solid #E9E6E2;
+  padding: 20px;
+  max-width: calc(var(--auth-logo-max) + 48px);
+  margin: 32px auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(22,50,74,0.04);
+}
+
+.auth-header {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.auth-logo {
+  display:block;
+  margin: 0 0 10px 0;
+  height: auto;
+  width: 100%;
+  max-width: var(--auth-logo-max);
+  object-fit: contain;
+}
+
+.login-container .auth-logo { max-height: 520px; }
+
+.subtitle { text-align:center; font-size:0.9rem; color:#7A8A95; margin-bottom:18px; }
+
+/* Form spacing tweaks for ionic components */
+ion-list { margin: 0; }
+ion-item { --padding-start: 8px; --inner-padding-end: 8px; }
+
+.cta-button {
+  --background: #8EC5B7;
+  --color: #fff;
+  --border-radius: 8px;
+}
+
+@media (max-width: 480px) {
+  .login-container { width: 92%; padding-left: 12px; padding-right: 12px; max-width: none; }
+  .auth-logo { max-width: var(--auth-logo-mobile); }
+}
