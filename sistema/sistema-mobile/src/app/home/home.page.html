@@ -4,13 +4,12 @@
       <ion-menu-button></ion-menu-button>
       <img src="assets/img/patin_logo.png" alt="logo" class="header-logo">
     </ion-buttons>
-    <ion-title class="title-accent">
-      Meu Repertório
-    </ion-title>
+
+    <ion-title class="title-accent">Repertório</ion-title>
+
     <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="logout()" class="logout-btn" aria-label="Logout">
-        <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        <span class="logout-name">{{ usuario.nome }}</span>
+      <ion-button class="logout-btn" (click)="logout()">
+        logout
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -18,40 +17,95 @@
 
 <ion-content [fullscreen]="true">
 
+  <!-- Modal de edição -->
+  <ion-modal
+    [isOpen]="editing"
+    keepContentsMounted="true"
+    (ionModalDidDismiss)="closeEditModal()"
+  >
+    <ng-template>
+      <ion-content class="ion-padding">
+        <h2>Editar Repertório</h2>
+
+        <ion-item>
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input [(ngModel)]="editModel.nome" placeholder="Nome"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tipo</ion-label>
+          <ion-select [(ngModel)]="editModel.tipo" (ionChange)="onTipoChange()">
+            <ion-select-option value="FILME">Filme</ion-select-option>
+            <ion-select-option value="SERIE">Série</ion-select-option>
+            <ion-select-option value="OUTRO">Outro</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Estrelas</ion-label>
+          <ion-select [(ngModel)]="editModel.estrela">
+            <ion-select-option *ngFor="let s of [1,2,3,4,5]" [value]="s">{{s}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="showDuracao">
+          <ion-label position="stacked">Duração (HH:MM:SS)</ion-label>
+          <ion-input [(ngModel)]="editModel.duracao" placeholder="01:30:00"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="showTemporada">
+          <ion-label position="stacked">Temporada</ion-label>
+          <ion-input type="number" [(ngModel)]="editModel.temporada" placeholder="1"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Resenha</ion-label>
+          <ion-textarea rows="4" [(ngModel)]="editModel.resenha" placeholder="Resenha"></ion-textarea>
+        </ion-item>
+
+        <div class="ion-padding-top" style="display:flex;gap:12px;justify-content:flex-end">
+          <ion-button fill="clear" (click)="closeEditModal()">Cancelar</ion-button>
+          <ion-button color="primary" (click)="saveEdit()">Salvar</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Mensagem quando não há itens -->
   <div *ngIf="!lista_repertorio || lista_repertorio.length === 0" class="ion-padding ion-text-center">
-    <ion-text color="medium">
-      <p>Nenhum repertório cadastrado no momento.</p>
-    </ion-text>
+    Nenhum repertório encontrado.
   </div>
 
+  <!-- Grid de cards -->
   <div class="grid" *ngIf="lista_repertorio && lista_repertorio.length > 0">
     <div class="grid-item" *ngFor="let item of lista_repertorio">
-      <ion-card class="card">
+      <div class="card">
         <div class="poster-box">
-          <img *ngIf="item.getFotoUrl() as fotoUrl; else placeholder" [src]="fotoUrl" class="poster-img" alt="Foto do repertório">
-          <ng-template #placeholder>
-            <div class="placeholder">Sem foto</div>
-          </ng-template>
+          <img *ngIf="item.getFotoUrl() as fotoUrl; else noFoto" [src]="fotoUrl" class="poster-img" />
+          <ng-template #noFoto><div class="placeholder">Sem foto</div></ng-template>
         </div>
-
-        <ion-card-content>
-          <h3 class="card-title">{{ item.nome }}</h3>
+        <div class="card-body">
+          <div class="card-title">{{ item.nome }}</div>
           <p class="muted"><strong>Tipo:</strong> {{ item.get_tipo_display || item.tipo }}</p>
-          <p class="muted"><strong>Data:</strong> {{ item.data ? (item.data | date:'dd/MM/yyyy') : '-' }}</p>
+          <p class="muted"><strong>Data:</strong> {{ item.data | date:'dd/MM/yyyy' }}</p>
           <p class="muted"><strong>Estrelas:</strong> {{ item.get_estrela_display || item.estrela }}</p>
-          <ng-container *ngIf="item.tipo == 'SERIE' && item.temporada">
-            <p class="muted"><strong>Temporada:</strong> {{ item.temporada }}</p>
-          </ng-container>
-          <ng-container *ngIf="item.duracao">
-            <p class="muted"><strong>Duração:</strong> {{ formatDuration(item.duracao) }}</p>
-          </ng-container>
+          <p *ngIf="item.temporada"><strong>Temporada:</strong> {{ item.temporada }}</p>
+          <p *ngIf="item.duracao"><strong>Duração:</strong> {{ formatDuration(item.duracao) }}</p>
           <p class="muted">{{ item.resenha }}</p>
-        </ion-card-content>
 
-        <ion-item lines="none">
-          <ion-button fill="clear" color="danger" slot="end" (click)="excluirRepertorio(item.id)">Apagar</ion-button>
-        </ion-item>
-      </ion-card>
+          <div class="card-actions">
+            <ion-button fill="clear" color="primary" (click)="openEditModal(item)">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              Editar
+            </ion-button>
+
+            <ion-button fill="clear" color="danger" (click)="excluirRepertorio(item.id)">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Apagar
+            </ion-button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

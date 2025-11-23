@@ -35,3 +35,90 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 //@import '@ionic/angular/css/palettes/dark.system.css';
+
+:root {
+  --modal-bg: #FBF9F7;
+  --modal-panel: #ffffff;
+  --modal-accent: #8EC5B7;
+}
+
+:host ::ng-deep ion-modal .modal-wrapper {
+  background: linear-gradient(0deg, var(--modal-bg), var(--modal-bg)) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 30px rgba(17,54,44,0.12) !important;
+}
+
+:host ::ng-deep ion-modal .modal-wrapper ion-content > .ion-padding {
+  background: var(--modal-panel) !important;
+  border: 1px solid var(--modal-border) !important;
+  color: var(--modal-text) !important;
+}
+
+:host ::ng-deep ion-modal h2 {
+  color: var(--modal-accent-dark) !important;
+}
+
+html, body, ion-app, ion-content {
+  font-family: var(--ion-font-family-base) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Força dentro do shadow DOM (ion-modal, ion-picker, etc.) */
+:root ::ng-deep, :host ::ng-deep {
+  font-family: var(--ion-font-family-base) !important;
+}
+
+/* Override específico e com prioridade para os campos da tela de login */
+:root ::ng-deep .login-page ion-item {
+  --background: #eefaf2 !important; /* fundo verde-claro */
+  background: #eefaf2 !important;  /* fallback caso o componente pinte diretamente */
+  border-color: rgba(35,99,73,0.08) !important;
+  box-shadow: 0 4px 14px rgba(17,54,44,0.04) !important;
+}
+
+/* forçar o input nativo dentro do ion-input/ion-textarea a ficar transparente
+   (assim o --background do ion-item aparece corretamente) */
+:root ::ng-deep .login-page ion-input::part(native),
+:root ::ng-deep .login-page ion-input::part(input),
+:root ::ng-deep .login-page ion-textarea::part(native),
+:root ::ng-deep .login-page ion-textarea::part(textarea) {
+  background: transparent !important;
+  color: #164d3a !important;
+}
+
+/* caso algum estilo global esteja aplicando background direto em .native-input */
+:root ::ng-deep .login-page .native-input,
+:root ::ng-deep .login-page .input-native {
+  background: transparent !important;
+}
+
+/* foco */
+:root ::ng-deep .login-page ion-item:focus-within {
+  box-shadow: 0 6px 20px rgba(44,168,113,0.10) !important;
+  border-color: rgba(44,168,113,0.22) !important;
+}
+
+/* Override definitivo para campos da tela de login (força através do shadow DOM) */
+:root ::ng-deep .login-page ion-item.login-field,
+:root ::ng-deep .login-page ion-item.login-field .native-input,
+:root ::ng-deep .login-page ion-item.login-field .input-native,
+:root ::ng-deep .login-page ion-input::part(native),
+:root ::ng-deep .login-page ion-textarea::part(native),
+:root ::ng-deep .login-page ion-input,
+:root ::ng-deep .login-page ion-textarea {
+  --background: #eefaf2 !important;
+  background: #eefaf2 !important;
+  border-color: rgba(35,99,73,0.08) !important;
+  box-shadow: 0 4px 14px rgba(17,54,44,0.04) !important;
+  color: #164d3a !important;
+}
+
+/* garante que o input nativo não pinte fundo por cima */
+:root ::ng-deep .login-page ion-input::part(native),
+:root ::ng-deep .login-page ion-input::part(input),
+:root ::ng-deep .login-page ion-textarea::part(native),
+:root ::ng-deep .login-page ion-textarea::part(textarea) {
+  background: transparent !important;
+  color: #164d3a !important;
+}

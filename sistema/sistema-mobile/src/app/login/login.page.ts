@@ -2,7 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { Storage } from '@ionic/storage-angular';
 import { Component, OnInit } from '@angular/core';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
-import { IonContent, LoadingController, NavController, AlertController, ToastController, IonList, IonItem, IonInput, IonButton } from '@ionic/angular/standalone';
+import { IonContent, LoadingController, NavController, AlertController, ToastController, IonList, IonItem, IonInput, IonButton, IonLabel, } from '@ionic/angular/standalone';
 import { Usuario } from './usuario.model';
 
 @Component({
@@ -10,7 +10,7 @@ import { Usuario } from './usuario.model';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonList, IonItem, IonInput, IonButton, IonContent, FormsModule],
+  imports: [IonList, IonItem, IonInput, IonButton, IonContent, IonLabel, FormsModule],
   providers: [Storage]
 })
 export class LoginPage implements OnInit {

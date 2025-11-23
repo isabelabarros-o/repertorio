@@ -10,7 +10,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from repertorio.serializers import SerializadorRepertorio
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
-from rest_framework.generics import ListAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
+from rest_framework import status
+import logging
 
 class MeuRepertorio(LoginRequiredMixin, ListView):
     model = Repertorio
@@ -64,7 +68,7 @@ class APIListarRepertorio(ListAPIView):
     
 class APIDeletarRepertorio(DestroyAPIView):
     '''
-    View para deletar um veículo (por meio da API REST).
+    View para deletar um repertório existente (por meio da API REST).
     '''
     serializer_class = SerializadorRepertorio
     authentication_classes = [TokenAuthentication]
@@ -72,3 +76,29 @@ class APIDeletarRepertorio(DestroyAPIView):
 
     def get_queryset(self):
         return Repertorio.objects.all()
+
+class APIEditarRepertorio(UpdateAPIView):
+    '''
+    View para editar um repertório existente (por meio da API REST).
+    '''
+    serializer_class = SerializadorRepertorio
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [JSONParser]
+
+    def get_queryset(self):
+        return Repertorio.objects.all()
+
+    # Sobrescreve para suportar partial updates e devolver erros legíveis
+    def update(self, request, *args, **kwargs):
+        logger = logging.getLogger(__name__)
+        partial = kwargs.pop('partial', False) or (request.method.upper() == 'PATCH')
+        instance = self.get_object()
+        logger.debug("APIEditarRepertorio request.data: %s", request.data)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        if not serializer.is_valid():
+            logger.debug("APIEditarRepertorio validation errors: %s", serializer.errors)
+            return Response({'detail': 'Validation error', 'errors': serializer.errors},
+                            status=status.HTTP_400_BAD_REQUEST)
+        self.perform_update(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)

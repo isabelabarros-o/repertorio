@@ -126,6 +126,13 @@ class TestesViewDeletarRepertorio(TestCase):
 
     def test_post(self):
         response = self.client.post(self.url)
-        self.assertIn(response.status_code, (302, 200))
+        self.assertIn(
+            response.status_code, (302, 200),
+            msg=f"POST {self.url} retornou status inesperado {response.status_code}; esperado 302 ou 200"
+        )
         if response.status_code == 302:
-            self.assertEqual(Repertorio.objects.count(), 0)
+            count = Repertorio.objects.count()
+            self.assertEqual(
+                count, 0,
+                msg=f"Após exclusão com redirect, esperado 0 Repertorio, encontrado {count}"
+            )

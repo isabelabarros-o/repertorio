@@ -10,6 +10,17 @@
   --shadow: 0 6px 18px rgba(22,50,74,0.06);
 }
 
+/* Palette modal (tons verdes claros, combinando com listar.css) */
+:root {
+  --modal-bg: #FBF9F7;
+  --modal-panel: #ffffff;
+  --modal-accent: #8EC5B7; /* verde principal */
+  --modal-accent-dark: #1f7a55;
+  --modal-text: #164d3a;
+  --modal-muted: #5b7b6a;
+  --modal-border: rgba(35, 99, 73, 0.08);
+}
+
 ion-content{ background-color: var(--bg); color: var(--ink); }
 
 .grid{
@@ -71,3 +82,99 @@ ion-header ion-toolbar .logout-btn ion-icon { font-size: 20px; }
   color:  #8EC5B7 !important;
   font-weight: 700;
 }
+
+/* Aplica no modal (usa ::ng-deep para atravessar shadow DOM do ion-modal) */
+:host ::ng-deep ion-modal .modal-wrapper {
+  background: linear-gradient(0deg, var(--modal-bg), var(--modal-bg));
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(17, 54, 44, 0.12);
+  max-width: 520px;
+  margin: 20px auto;
+}
+
+/* Conteúdo interno do modal */
+:host ::ng-deep ion-modal ion-content,
+:host ::ng-deep ion-modal .modal-wrapper ion-content {
+  background: transparent;
+  color: var(--modal-text);
+}
+
+/* Painel interno (card) */
+:host ::ng-deep ion-modal .modal-wrapper ion-content > .ion-padding {
+  background: var(--modal-panel);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--modal-border);
+}
+
+/* Título */
+:host ::ng-deep ion-modal h2 {
+  margin: 0 0 12px 0;
+  color: var(--modal-accent-dark);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Labels e texto dos inputs */
+:host ::ng-deep ion-modal ion-label {
+  color: var(--modal-muted);
+  font-weight: 600;
+}
+
+/* Inputs, textarea e selects com fundo claro e borda sutil */
+:host ::ng-deep ion-modal ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 8px;
+}
+
+:host ::ng-deep ion-modal ion-input,
+:host ::ng-deep ion-modal ion-textarea,
+:host ::ng-deep ion-modal ion-select {
+  --background: #fbfffc;
+  --border-radius: 8px;
+  --box-shadow: none;
+  padding: 8px 10px;
+  border: 1px solid var(--modal-border);
+  color: var(--modal-text);
+}
+
+/* Placeholder e texto secundário */
+:host ::ng-deep ion-modal ion-input::part(native),
+:host ::ng-deep ion-modal ion-textarea::part(native) {
+  color: var(--modal-text);
+}
+
+/* Ações (buttons) */
+:host ::ng-deep ion-modal .ion-padding-top {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+:host ::ng-deep ion-modal ion-button[color="primary"] {
+  --background: var(--modal-accent);
+  --color: #fff;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-weight: 600;
+}
+
+:host ::ng-deep ion-modal ion-button[fill="clear"] {
+  --color: var(--modal-accent-dark);
+}
+
+/* Responsividade */
+@media (max-width: 420px) {
+  :host ::ng-deep ion-modal .modal-wrapper {
+    margin: 8px;
+    border-radius: 8px;
+  }
+  :host ::ng-deep ion-modal h2 { font-size: 1.05rem; }
+}
+
+/* Mantém o estilo dos cards/pages existentes intacto */
+.poster-img{ width:100%; height:100%; object-fit:cover; display:block; border-radius:8px; }

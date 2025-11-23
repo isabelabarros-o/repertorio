@@ -10,5 +10,6 @@ urlpatterns = [
     path('deletar/<int:pk>/', DeletarRepertorio.as_view(), name='deletar-repertorio'),
     path('fotos/<str:arquivo>/', FotoRepertorio.as_view(), name='foto-repertorio'),
     path('api/', APIListarRepertorio.as_view(), name='api-listar-repertorio'),
-    path('api/<int:pk>/', APIDeletarRepertorio.as_view(), name='api-deletar-repertorio'),
+    path('api/deletar/<int:pk>/', APIDeletarRepertorio.as_view(), name='api-deletar-repertorio'),
+    path('api/editar/<int:pk>/', APIEditarRepertorio.as_view(), name='api-editar-repertorio'),
 ]
