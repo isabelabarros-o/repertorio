@@ -1,23 +1,37 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-      <img src="assets/img/patin_logo.png" alt="logo" class="header-logo">
-    </ion-buttons>
-
     <ion-title class="title-accent">Repertório</ion-title>
-
     <ion-buttons slot="end">
-      <ion-button class="logout-btn" (click)="logout()">
-        logout
-      </ion-button>
+      <ion-button class="logout-btn" (click)="logout()">logout</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <!-- Modal de edição -->
+  <div class="search-container ion-padding" style="display:flex;gap:8px;align-items:center">
+    <ion-searchbar
+      #searchbar
+      name="q"
+      placeholder="Título, resenha, tipo ou estrelas"
+      [(ngModel)]="searchQuery"
+      (ionClear)="clearSearch()"
+      showCancelButton="never"
+      style="flex:1"
+    ></ion-searchbar>
+
+    <ion-button color="primary" class="search-btn" (click)="consultarRepertorioSistemaWeb(searchQuery)">
+      <ion-icon name="search-outline" slot="start"></ion-icon>
+      Pesquisar
+    </ion-button>
+
+    <ion-button fill="clear" color="medium" aria-label="Limpar pesquisa"
+      *ngIf="searchQuery && searchQuery.length > 0"
+      (click)="clearSearch()">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+
   <ion-modal
     [isOpen]="editing"
     keepContentsMounted="true"
@@ -29,12 +43,12 @@
 
         <ion-item>
           <ion-label position="stacked">Nome</ion-label>
-          <ion-input [(ngModel)]="editModel.nome" placeholder="Nome"></ion-input>
+          <ion-input name="nome" [(ngModel)]="editModel.nome" placeholder="Nome"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="stacked">Tipo</ion-label>
-          <ion-select [(ngModel)]="editModel.tipo" (ionChange)="onTipoChange()">
+          <ion-select name="tipo" [(ngModel)]="editModel.tipo" (ionChange)="onTipoChange()">
             <ion-select-option value="FILME">Filme</ion-select-option>
             <ion-select-option value="SERIE">Série</ion-select-option>
             <ion-select-option value="OUTRO">Outro</ion-select-option>
@@ -43,24 +57,24 @@
 
         <ion-item>
           <ion-label position="stacked">Estrelas</ion-label>
-          <ion-select [(ngModel)]="editModel.estrela">
+          <ion-select name="estrela" [(ngModel)]="editModel.estrela">
             <ion-select-option *ngFor="let s of [1,2,3,4,5]" [value]="s">{{s}}</ion-select-option>
           </ion-select>
         </ion-item>
 
         <ion-item *ngIf="showDuracao">
           <ion-label position="stacked">Duração (HH:MM:SS)</ion-label>
-          <ion-input [(ngModel)]="editModel.duracao" placeholder="01:30:00"></ion-input>
+          <ion-input name="duracao" [(ngModel)]="editModel.duracao" placeholder="01:30:00"></ion-input>
         </ion-item>
 
         <ion-item *ngIf="showTemporada">
           <ion-label position="stacked">Temporada</ion-label>
-          <ion-input type="number" [(ngModel)]="editModel.temporada" placeholder="1"></ion-input>
+          <ion-input name="temporada" type="number" [(ngModel)]="editModel.temporada" placeholder="1"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label position="stacked">Resenha</ion-label>
-          <ion-textarea rows="4" [(ngModel)]="editModel.resenha" placeholder="Resenha"></ion-textarea>
+          <ion-textarea name="resenha" rows="4" [(ngModel)]="editModel.resenha" placeholder="Resenha"></ion-textarea>
         </ion-item>
 
         <div class="ion-padding-top" style="display:flex;gap:12px;justify-content:flex-end">
@@ -71,17 +85,15 @@
     </ng-template>
   </ion-modal>
 
-  <!-- Mensagem quando não há itens -->
   <div *ngIf="!lista_repertorio || lista_repertorio.length === 0" class="ion-padding ion-text-center">
     Nenhum repertório encontrado.
   </div>
 
-  <!-- Grid de cards -->
   <div class="grid" *ngIf="lista_repertorio && lista_repertorio.length > 0">
     <div class="grid-item" *ngFor="let item of lista_repertorio">
       <div class="card">
         <div class="poster-box">
-          <img *ngIf="item.getFotoUrl() as fotoUrl; else noFoto" [src]="fotoUrl" class="poster-img" />
+          <img *ngIf="getFotoUrl(item) as fotoUrl; else noFoto" [src]="fotoUrl" class="poster-img" />
           <ng-template #noFoto><div class="placeholder">Sem foto</div></ng-template>
         </div>
         <div class="card-body">

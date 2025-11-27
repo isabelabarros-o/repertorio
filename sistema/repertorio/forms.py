@@ -6,10 +6,9 @@ import re
 
 
 class DurationHMField(forms.Field):
-    """Custom form field that parses HH:MM as hours and minutes into timedelta.
-
-    This ensures user-entered '01:30' becomes 1 hour 30 minutes (not 1 minute 30 seconds,
-    which is how Django's DurationField parser can interpret 'MM:SS').
+    """
+    Campo de formulário personalizado que analisa HH:MM como horas e minutos em um timedelta.
+    Isso garante que o valor inserido pelo usuário '01:30' seja interpretado como 1 hora e 30 minutos (e não 1 minuto e 30 segundos, que é como o analisador DurationField do Django interpreta 'MM:SS').
     """
     default_error_messages = {
         'invalid': 'Formato inválido. Use HH:MM (horas:minutos).',
@@ -19,7 +18,6 @@ class DurationHMField(forms.Field):
         if value in (None, ''):
             return None
         if isinstance(value, timedelta):
-            # normalize to hours/minutes
             total_seconds = int(value.total_seconds())
             hours = total_seconds // 3600
             minutes = (total_seconds % 3600) // 60
@@ -27,7 +25,6 @@ class DurationHMField(forms.Field):
 
         if isinstance(value, str):
             value = value.strip()
-            # accept formats like H:MM or HH:MM or HH:MM:SS (we ignore seconds)
             m = re.match(r'^(\d{1,2}):(\d{2})(?::(\d{2}))?$', value)
             if not m:
                 raise forms.ValidationError(self.error_messages['invalid'])
@@ -35,7 +32,6 @@ class DurationHMField(forms.Field):
             minutes = int(m.group(2))
             return timedelta(hours=hours, minutes=minutes)
 
-        # try numeric seconds fallback
         try:
             seconds = int(value)
             hours = seconds // 3600
@@ -58,13 +54,11 @@ class FormularioRepertorio(ModelForm):
             'tipo': forms.Select(attrs={'class': 'form-select'}),
             'data': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'estrela': forms.Select(attrs={'class': 'form-select'}),
-            # duracao handled by explicit field below
             'temporada': forms.NumberInput(attrs={'class': 'form-control', 'min': 1}),
             'resenha': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Escreva sua resenha...'}),
             'foto': forms.ClearableFileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
         }
 
-    # explicit custom field so widget + parsing align
     duracao = DurationHMField(required=False, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'HH:MM',
@@ -73,24 +67,19 @@ class FormularioRepertorio(ModelForm):
     }))
 
     def clean_duracao(self):
-        """Normalize `duracao` input into a timedelta (hours, minutes, seconds).
-
-        The widget is a TimeInput so browsers provide values like 'HH:MM' or a
-        time object. The model uses DurationField so we convert time -> timedelta
-        to ensure hours:minutes are stored correctly.
+        """Normalizar a entrada `duracao` em um timedelta (horas, minutos, segundos).
+        O widget é um TimeInput, portanto, os navegadores fornecem valores como 'HH:MM' ou um objeto de tempo.
+        O modelo usa DurationField, então convertemos tempo -> timedelta para garantir que horas:minutos sejam armazenados corretamente.
         """
         value = self.cleaned_data.get('duracao')
         if value in (None, ''):
             return None
 
-        # If already a timedelta, return as-is
         if isinstance(value, timedelta):
-            # normalize to hours and minutes (discard seconds)
             total_seconds = int(value.total_seconds())
             hours = total_seconds // 3600
             minutes = (total_seconds % 3600) // 60
             return timedelta(hours=hours, minutes=minutes)
-        # If it's a time object (from browser), convert (discard seconds)
         try:
             import datetime as _dt
             if isinstance(value, _dt.time):
@@ -98,7 +87,6 @@ class FormularioRepertorio(ModelForm):
         except Exception:
             pass
 
-        # If it's a string like 'HH:MM' or 'HH:MM:SS', parse it
         if isinstance(value, str):
             for fmt in ("%H:%M:%S", "%H:%M"):
                 try:
@@ -107,7 +95,6 @@ class FormularioRepertorio(ModelForm):
                 except ValueError:
                     pass
 
-        # Fallback: try numeric seconds, convert to hours/minutes (discard seconds)
         try:
             seconds = int(value)
             hours = seconds // 3600
@@ -116,5 +103,4 @@ class FormularioRepertorio(ModelForm):
         except Exception:
             pass
 
-        # If we can't coerce, raise a ValidationError
         raise forms.ValidationError('Formato de duração inválido. Use HH:MM ou HH:MM:SS.')

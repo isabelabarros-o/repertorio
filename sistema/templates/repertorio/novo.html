@@ -9,7 +9,6 @@
     <form action="/repertorio/novo/" method="post" enctype="multipart/form-data" class="row g-4">
         {% csrf_token %}
 
-        <!-- Left column: fields -->
         <div class="col-12 col-md-8">
             <div class="row g-3">
                 <div class="col-12">
@@ -95,7 +94,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 });
 
-// Toggle duracao/temporada visibility based on Tipo select
 document.addEventListener('DOMContentLoaded', function(){
     const tipoSelect = document.querySelector('select[name="tipo"]');
     const duracaoField = document.getElementById('duracao-field');
@@ -111,16 +109,13 @@ document.addEventListener('DOMContentLoaded', function(){
             duracaoField.style.display = '';
             temporadaField.style.display = 'none';
         } else {
-            // OUTRO or default: hide both
             duracaoField.style.display = 'none';
             temporadaField.style.display = 'none';
         }
     }
 
-    // initialize
     updateVisibility();
 
-    // update on change
     tipoSelect.addEventListener('change', updateVisibility);
 });
 </script>

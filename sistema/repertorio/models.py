@@ -1,7 +1,7 @@
 from django.db import models
 from repertorio.consts import OPCOES_ESTRELA
 from datetime import datetime
-# Create your models here.
+
 class Repertorio(models.Model):
 
     class TipoRepertorio(models.TextChoices):
@@ -16,7 +16,7 @@ class Repertorio(models.Model):
     tipo = models.CharField(
         max_length=5,
         choices=TipoRepertorio.choices,
-        default=TipoRepertorio.FILME, # Define 'Filme' como padrão
+        default=TipoRepertorio.FILME,
         help_text="Selecione se é um filme ou uma série."
     )
     duracao = models.DurationField(

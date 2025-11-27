@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-// Importe todos os componentes que você está usando no HTML
+import { IonicModule } from '@ionic/angular';
 import { 
   IonContent, IonHeader, IonTitle, IonToolbar, 
   LoadingController, NavController, ToastController, 
@@ -9,38 +9,33 @@ import {
   IonCardHeader, IonCardTitle, IonCardSubtitle, 
   IonCardContent, IonList, IonItem, IonItemSliding, 
   IonThumbnail, IonLabel, IonItemOptions, IonItemOption,
-  IonIcon, IonButton, IonModal, IonInput, IonSelect, IonSelectOption, IonTextarea  // <--- ADICIONADO PARA CORRIGIR O ERRO DO ÍCONE E ION-BUTTON
+  IonIcon, IonButton, IonModal, IonInput, IonSelect, IonSelectOption, IonTextarea
 } from '@ionic/angular/standalone';
 import { Storage } from '@ionic/storage-angular';
-import { Repertorio } from './repertorio.model'; // Ajuste o caminho se necessário
+import { Repertorio } from './repertorio.model';
 import { Usuario } from '../login/usuario.model';
 import { CapacitorHttp, HttpOptions, HttpResponse } from '@capacitor/core';
-import { addIcons } from 'ionicons'; // addIcons registers icons for ion-icon
-import { logOutOutline, createOutline, trashOutline } from 'ionicons/icons'; // logout, edit, delete icons
+import { addIcons } from 'ionicons';
+import { logOutOutline, createOutline, trashOutline } from 'ionicons/icons';
+import { IonSearchbar } from '@ionic/angular';
 
 @Component({
   standalone: true,
-  selector: 'app-home', // <--- MUDADO
-  templateUrl: './home.page.html', // <--- MUDADO
-  styleUrls: ['./home.page.scss'], // <--- MUDADO
+  selector: 'app-home',
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
   imports: [
-    // Módulos principais do Angular
-    CommonModule, 
-    FormsModule, 
-    
-    // Todos os componentes Ionic importados
-    IonItemOption, IonItemOptions, IonLabel, IonItemSliding, 
-    IonItem, IonList, IonCardContent, IonCardSubtitle, 
-    IonCardTitle, IonCardHeader, IonCard, IonText, 
-    IonButtons, IonMenuButton, IonContent, IonHeader, 
-    IonTitle, IonToolbar, IonThumbnail, IonIcon // <--- ADICIONADO
-  , IonButton, IonModal, IonInput, IonSelect, IonSelectOption, IonTextarea // make <ion-button> available to the standalone component
+    CommonModule,
+    FormsModule,
+    IonicModule
   ],
   providers: [Storage]
 })
 export class HomePage implements OnInit {
   public usuario: Usuario = new Usuario();
-  public lista_repertorio: Repertorio[] = [];
+  public searchQuery: string = '';
+  @ViewChild('searchbar', { static: false }) searchbar?: IonSearchbar;
+  public lista_repertorio: any[] = [];
   public editing: boolean = false;
   public editModel: any = {};
   public showDuracao = true;
@@ -50,16 +45,15 @@ export class HomePage implements OnInit {
     public storage: Storage,
     public controle_toast: ToastController,
     public controle_navegacao: NavController,
-    public controle_carregamento: LoadingController
+    public controle_carregamento: LoadingController,
+    private cd: ChangeDetectorRef
   ) { }
 
-  // Expose a safe display string for the header (avoids template type error)
   get userDisplay(): string {
     const u: any = this.usuario as any;
     return (u && (u.nome || u.usuario || u.username)) ? (u.nome || u.usuario || u.username) : '';
   }
 
-  // register the logout icon so <ion-icon name="log-out-outline"> resolves
   ngOnInitIcons(){
     try{
       addIcons({
@@ -72,7 +66,6 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
 
-    // Verifica se existe registro de configuração para o último usuário autenticado
     await this.storage.create();
     const registro = await this.storage.get('usuario');
 
@@ -86,77 +79,68 @@ export class HomePage implements OnInit {
     }
   }
 
-  async consultarRepertorioSistemaWeb() {
+  async consultarRepertorioSistemaWeb(q?: string | null) {
+    const candidate = (q !== undefined && q !== null) ? q : this.searchQuery;
+    const termo = (typeof candidate === 'string') ? candidate.trim() : '';
 
-    // Inicializa interface com efeito de carregamento
-    const loading = await this.controle_carregamento.create({message: 'Pesquisando...', duration: 60000});
+    const loading = await this.controle_carregamento.create({ message: termo ? 'Pesquisando...' : 'Carregando...', duration: 60000 });
     await loading.present();
 
-    // Define informações do cabeçalho da requisição
-    const options: HttpOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':`Token ${this.usuario.token}`
-      },
-      url: 'http://127.0.0.1:8000/repertorio/api/'
-    };
+    const baseUrl = 'http://127.0.0.1:8000/repertorio/api/';
+    const url = termo ? `${baseUrl}?q=${encodeURIComponent(termo)}` : baseUrl;
+
+    const headers: any = { 'Content-Type': 'application/json' };
+    if (this.usuario && (this.usuario as any).token) {
+      headers['Authorization'] = `Token ${(this.usuario as any).token}`;
+    }
+    const options: HttpOptions = { headers, url };
 
     CapacitorHttp.get(options)
       .then(async (resposta: HttpResponse) => {
-
-        // Verifica se a requisição foi processada com sucesso
-        if(resposta.status == 200) {
-          // Normalize API objects into Repertorio instances so template helpers work
+        if (resposta.status == 200) {
           try {
             const raw = resposta.data as any[];
             this.lista_repertorio = Array.isArray(raw) ? raw.map(r => new Repertorio(r)) : [];
           } catch (e) {
             this.lista_repertorio = [];
           }
-
-          // Finaliza interface com efeito de carregamento
           loading.dismiss();
-        }
-        else {
-
-          // Finaliza autenticação e apresenta mensagem de erro
+        } else {
           loading.dismiss();
           this.apresenta_mensagem(`Falha ao consultar repertórios: código ${resposta.status}`);
         }
       })
       .catch(async (erro: any) => {
-        console.log(erro);
+        console.error(erro);
         loading.dismiss();
-        this.apresenta_mensagem(`Falha ao consultar repertórios: código ${erro?.status}`);
+        this.lista_repertorio = [];
+        this.apresenta_mensagem(`Falha ao consultar repertórios: código ${erro?.status ?? 'erro'}`);
       });
   }
 
   async excluirRepertorio(id: number) {
 
-    // Inicializa interface com efeito de carregamento
     const loading = await this.controle_carregamento.create({message: 'Excluindo...', duration: 30000});
     await loading.present();
 
+    const headers: any = {
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${this.usuario.token}`
+    };
     const options: HttpOptions = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization':`Token ${this.usuario.token}`
-      },
+      headers,
       url: `http://127.0.0.1:8000/repertorio/api/deletar/${id}/`
     };
 
     CapacitorHttp.delete(options)
       .then(async (resposta: HttpResponse) => {
 
-        // Verifica se a requisição foi processada com sucesso
         if(resposta.status == 204) {
           
-          // Finaliza interface com efeito de carregamento
           loading.dismiss();
         }
         else {
 
-          // Finaliza autenticação e apresenta mensagem de erro
           loading.dismiss();
           this.apresenta_mensagem(`Falha ao excluir o repertórios: código ${resposta.status}`);
         }
@@ -168,23 +152,19 @@ export class HomePage implements OnInit {
       })
       .finally(() => {
 
-        // Consulta novamente a lista de repertórios
         this.lista_repertorio = [];
         this.consultarRepertorioSistemaWeb();
       });
   }
 
-  // novo método para navegar à edição (faz PATCH mínimo via API)
   async editarRepertorio(id: number, item?: any) {
     try {
-      // pede valores ao usuário
       const novoNome = window.prompt('Editar nome do repertório (deixe em branco para não alterar):', item?.nome || '');
-      if (novoNome === null) return; // usuário cancelou
+      if (novoNome === null) return;
 
       const novaResenha = window.prompt('Editar resenha (deixe em branco para não alterar):', item?.resenha || '');
-      if (novaResenha === null) return; // usuário cancelou
+      if (novaResenha === null) return; 
 
-      // monta payload incluindo apenas campos não vazios
       const payload: any = {};
       if (typeof novoNome === 'string' && novoNome.trim().length > 0) payload.nome = novoNome.trim();
       if (typeof novaResenha === 'string' && novaResenha.trim().length > 0) payload.resenha = novaResenha.trim();
@@ -213,7 +193,6 @@ export class HomePage implements OnInit {
             this.apresenta_mensagem('Repertório atualizado com sucesso.');
             this.consultarRepertorioSistemaWeb();
           } else {
-            // mostra mensagem genérica e, se houver body, logue para debug
             console.warn('PATCH resposta:', resposta);
             this.apresenta_mensagem(`Falha ao atualizar: código ${resposta.status}`);
           }
@@ -221,7 +200,6 @@ export class HomePage implements OnInit {
         .catch(async (erro: any) => {
           loading.dismiss();
           console.error('PATCH erro:', erro);
-          // se o backend retornar JSON com detalhes, mostre ao usuário / log
           const detalhe = erro?.message || (erro?.error ? JSON.stringify(erro.error) : null);
           this.apresenta_mensagem(`Erro ao atualizar repertório: ${detalhe || 'ver console'}`);
         });
@@ -232,7 +210,6 @@ export class HomePage implements OnInit {
   }
 
   openEditModal(item: any) {
-    // prepara modelo de edição com valores atuais
     this.editModel = {
       id: item.id,
       nome: item.nome ?? '',
@@ -260,7 +237,6 @@ export class HomePage implements OnInit {
   async saveEdit() {
     if (!this.editModel || !this.editModel.id) return;
 
-    // monta payload: envie todos os campos (se quiser enviar apenas alterados, ajuste)
     const payload: any = {
       nome: (this.editModel.nome || '').trim(),
       tipo: this.editModel.tipo || null,
@@ -270,7 +246,6 @@ export class HomePage implements OnInit {
       resenha: (this.editModel.resenha || '').trim()
     };
 
-    // remove keys com valor null/undefined para evitar validação que exija campos
     Object.keys(payload).forEach(k => {
       if (payload[k] === null || payload[k] === undefined || payload[k] === '') {
         delete payload[k];
@@ -319,7 +294,6 @@ export class HomePage implements OnInit {
   }
 
   async logout() {
-    // Clear stored user and navigate to login
     try {
       await this.storage.clear();
     } catch (e) {
@@ -328,11 +302,19 @@ export class HomePage implements OnInit {
     this.controle_navegacao.navigateRoot('/login');
   }
 
-  // Receives duration in seconds or 'HH:MM:SS'/'MM:SS' string and formats to H:MM
+clearSearch(): void {
+    this.searchQuery = '';
+    setTimeout(() => {
+      try { this.searchbar && (this.searchbar.value = ''); } catch { /* ignore */ }
+      this.consultarRepertorioSistemaWeb('');
+      this.cd.detectChanges();
+    }, 0);
+  }
+
+
   formatDuration(value: number | string | null | undefined): string {
     if (value === null || value === undefined || value === '') return '-';
 
-    // If number => seconds
     if (typeof value === 'number') {
       const totalSeconds = Math.floor(value);
       const hours = Math.floor(totalSeconds / 3600);
@@ -340,7 +322,6 @@ export class HomePage implements OnInit {
       return hours > 0 ? `${hours}:${minutes.toString().padStart(2, '0')}` : `${minutes}:${(totalSeconds % 60).toString().padStart(2, '0')}`;
     }
 
-    // If string contains ':' assume HH:MM:SS or MM:SS
     if (typeof value === 'string' && value.includes(':')) {
       const parts = value.split(':').map(p => parseInt(p, 10) || 0);
       if (parts.length === 3) {
@@ -355,7 +336,6 @@ export class HomePage implements OnInit {
       }
     }
 
-    // Try ISO 8601 like PT1H30M
     if (typeof value === 'string' && value.startsWith('P') || value.startsWith('PT')) {
       try {
         const iso = value;
@@ -369,8 +349,20 @@ export class HomePage implements OnInit {
       }
     }
 
-    // fallback: return as-is
     return String(value);
+  }
+
+  getFotoUrl(item: any): string | null {
+    if (!item) return null;
+    if (typeof item.getFotoUrl === 'function') {
+      try { return item.getFotoUrl(); } catch { /* ignore */ }
+    }
+    if (typeof item.foto === 'string' && item.foto.trim().length > 0) {
+      if (item.foto.startsWith('http')) return item.foto;
+      return `http://127.0.0.1:8000/${item.foto.replace(/^\/+/, '')}`;
+    }
+    if (typeof item.foto_url === 'string' && item.foto_url.trim().length > 0) return item.foto_url;
+    return null;
   }
 
 }

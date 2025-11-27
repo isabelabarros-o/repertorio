@@ -18,15 +18,22 @@
     box-sizing: border-box;
   }
 
-  /* cor de fundo dos inputs (verde claro suave) */
   ion-item {
-    --background: #eefaf2; /* fundo suave */
     --border-radius: 10px;
     --padding-start: 12px;
     --inner-padding-end: 12px;
     margin-bottom: 12px;
     border: 1px solid rgba(35,99,73,0.08);
     box-shadow: 0 4px 14px rgba(17,54,44,0.04);
+  }
+
+  /* cor específica para os campos de usuário/senha */
+  ion-item.login-field,
+  ion-item.login-field ion-input::part(native),
+  ion-item.login-field ion-textarea::part(native) {
+    --background: var(--accent-2, #e6f2ff) !important;
+    background: var(--accent-2, #e6f2ff) !important;
+    color: var(--modal-text, #164d3a) !important;
   }
 
   /* texto/placeholder */
@@ -91,7 +98,6 @@
 
 .subtitle { text-align:center; font-size:0.9rem; color:#7A8A95; margin-bottom:18px; }
 
-/* Form spacing tweaks for ionic components */
 ion-list { margin: 0; }
 ion-item { --padding-start: 8px; --inner-padding-end: 8px; }
 

@@ -14,13 +14,31 @@ from rest_framework.generics import ListAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import Q
 import logging
 
 class MeuRepertorio(LoginRequiredMixin, ListView):
     model = Repertorio
     context_object_name = 'meu_repertorio'
     template_name = 'repertorio/listar.html'
-    
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = (self.request.GET.get('q') or '').strip()
+        if not q:
+            return qs
+        try:
+            estrela_val = int(q)
+            estrela_q = Q(estrela=estrela_val)
+        except Exception:
+            estrela_q = Q()
+        return qs.filter(
+            Q(nome__icontains=q) |
+            Q(resenha__icontains=q) |
+            Q(tipo__icontains=q) |
+            estrela_q
+        ).distinct()
+
 class CriarRepertorio(LoginRequiredMixin, CreateView):
     model = Repertorio
     form_class = FormularioRepertorio
@@ -64,7 +82,21 @@ class APIListarRepertorio(ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Repertorio.objects.all()
+        qs = Repertorio.objects.all()
+        q = (self.request.query_params.get('q') or '').strip()
+        if not q:
+            return qs
+        try:
+            estrela_val = int(q)
+            estrela_q = Q(estrela=estrela_val)
+        except Exception:
+            estrela_q = Q()
+        return qs.filter(
+            Q(nome__icontains=q) |
+            Q(resenha__icontains=q) |
+            Q(tipo__icontains=q) |
+            estrela_q
+        ).distinct()
     
 class APIDeletarRepertorio(DestroyAPIView):
     '''
@@ -89,7 +121,6 @@ class APIEditarRepertorio(UpdateAPIView):
     def get_queryset(self):
         return Repertorio.objects.all()
 
-    # Sobrescreve para suportar partial updates e devolver erros legíveis
     def update(self, request, *args, **kwargs):
         logger = logging.getLogger(__name__)
         partial = kwargs.pop('partial', False) or (request.method.upper() == 'PATCH')

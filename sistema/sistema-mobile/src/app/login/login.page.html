@@ -7,20 +7,16 @@
 
     <form (submit)="autenticarUsuario()">
       <ion-list>
-        <ion-item class="login-field">
-          <ion-label position="floating">Usuário</ion-label>
-          <ion-input type="text" [(ngModel)]="instancia.username" name="username" required></ion-input>
+        <ion-item>
+          <ion-input label="Usuário" type="text" name="usuario" [(ngModel)]="instancia.username"></ion-input>
         </ion-item>
-
-        <ion-item class="login-field">
-          <ion-label position="floating">Senha</ion-label>
-          <ion-input type="password" [(ngModel)]="instancia.password" name="password" required></ion-input>
+        <ion-item>
+          <ion-input label="Senha" type="password" name="senha" [(ngModel)]="instancia.password"></ion-input>
         </ion-item>
-
-        <div style="margin-top:18px; display:flex; gap:10px; justify-content:flex-end;">
-          <ion-button type="submit" class="cta-button" color="primary">Autenticar</ion-button>
-        </div>
       </ion-list>
+      <ion-button expand="block" (click)="autenticarUsuario()" class="cta-button">
+        Autenticar
+      </ion-button>
     </form>
   </div>
 </ion-content>

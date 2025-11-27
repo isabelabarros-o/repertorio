@@ -1,16 +1,15 @@
 :root{
-    --bg: #FBF9F7;        /* very pale warm */
-    --card: #FFFFFF;      /* card background */
-    --muted: #7A8A95;     /* muted text */
-    --ink: #16324A;       /* primary text (soft navy) */
-    --accent: #8EC5B7;    /* pastel teal/green */
-    --accent-2: #F3CDA6;  /* soft peach */
-    --danger: #E39A8A;    /* warm coral (muted) */
-    --border: #E9E6E2;    /* subtle border */
+    --bg: #FBF9F7;
+    --card: #FFFFFF;
+    --muted: #7A8A95;
+    --ink: #16324A;
+    --accent: #8EC5B7;
+    --accent-2: #F3CDA6;
+    --danger: #E39A8A;
+    --border: #E9E6E2;
     --shadow: 0 6px 18px rgba(22,50,74,0.06);
 }
 
-/* ----- GERAL E CABEÇALHO ----- */
 body {
     background-color: var(--bg);
     color: var(--ink);
@@ -30,9 +29,8 @@ header {
     opacity: 0.9;
 }
 
-/* Logout / action button */
 .col-md-3 .btn-secondary{
-    background: linear-gradient(180deg, var(--ink), #10203A); /* subtle */
+    background: linear-gradient(180deg, var(--ink), #10203A);
     border: none;
     border-radius: 12px;
     font-weight: 600;
@@ -47,11 +45,10 @@ header {
     top: 115% !important;
 }
 
-/* ----- ÁREA DE BUSCA ----- */
 .busca{ background: transparent; padding: 0; }
 
 .busca input[type="text"].form-control{
-    background-color: rgba(142,197,183,0.12); /* soft teal tint */
+    background-color: rgba(142,197,183,0.12);
     border: 1px solid var(--border);
     border-radius: 12px;
     color: var(--muted);
@@ -78,7 +75,6 @@ header {
     box-shadow: none;
 }
 
-/* ----- CONTADOR ----- */
 p.fw-semibold{
     color: var(--ink);
     font-size: 1rem;
@@ -92,7 +88,6 @@ p.fw-semibold .badge{
     padding-left: 6px;
 }
 
-/* ----- CARD ----- */
 .card{
     background-color: var(--card);
     border-radius: 14px;
@@ -103,7 +98,6 @@ p.fw-semibold .badge{
     height: auto;
 }
 
-/* Image placeholder */
 .card .bg-light.text-secondary{
     background-color: #F1F3F4 !important;
     color: transparent !important;
@@ -123,7 +117,6 @@ p.fw-semibold .badge{
     top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 
-/* Title */
 .card-title{
     color: var(--ink);
     font-weight: 700;
@@ -133,7 +126,6 @@ p.fw-semibold .badge{
     margin-bottom: 0.25rem;
 }
 
-/* Details */
 .card-body p{
     text-align: left;
     color: var(--muted);
@@ -142,12 +134,10 @@ p.fw-semibold .badge{
     font-size: 0.95rem;
 }
 
-/* Action buttons area */
 .card .text-md-end{
     display:flex; justify-content:flex-end; gap:0.6rem; align-items:center;
 }
 
-/* Buttons refined */
 .btn-outline-primary, .btn-outline-danger{
     border-radius: 10px;
     font-size: 0.9rem;
@@ -170,12 +160,10 @@ p.fw-semibold .badge{
 
 .btn-outline-danger:hover{ transform: translateY(-1px); }
 
-/* Small responsive tweaks */
 @media (max-width: 576px){
     .card{ padding: 1rem !important; }
     .card .bg-light.text-secondary{ height: 110px !important; }
     .col-8.col-md-6{ margin-top: 0.5rem; }
 }
 
-/* Subtle helpers */
 a { text-decoration: none; }

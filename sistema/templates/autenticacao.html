@@ -6,7 +6,6 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Login</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <!-- uses base.css for fonts and theme; keep small auth-specific overrides -->
   <link rel="stylesheet" href="{% static 'css/autenticacao.css' %}">
 </head>
 
@@ -14,7 +13,7 @@
   <div class="login-container">
     <div class="auth-header">
   <img src="{% static 'img/patin_logo.png' %}" alt="Repertório" class="auth-logo">
-      <div class="subtitle">Se cadastre ou faça login</div>
+      <div class="subtitle">Seu diário de séries e filmes</div>
     </div>
     
     <form action="/" method="POST">
@@ -48,6 +47,5 @@
     </div>
   {% endif %}
   
-  <!-- JS sizing removed: card and logo are now sized and centered via CSS only -->
 </body>
 </html>

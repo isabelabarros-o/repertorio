@@ -7,13 +7,10 @@
 
     <title>{% block titulo %} Desenvolvimento webmobile {% endblock %}</title>
 
-    <!-- Fonts: site uses unified base.css (Inter/Crimson available via base.css) -->
     
     <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- <CHANGE> Added custom cinema cult CSS after Bootstrap to override styles -->
     <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}">
-    <!-- Use Bootstrap bundle from CDN to ensure JS is available in development without extra static config -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
 
     {# Page-specific CSS block; base.css provides unified styles #}
@@ -26,7 +23,6 @@
     <div id="menu-superior">
         {% block menu_superior %}
         <div class="container">
-            <!-- header -->
             <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
               <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                 <li>
@@ -40,7 +36,6 @@
                     </a>
                 </li>
               </ul>
-                            <!-- site logo left of navigation -->
                             <a href="/" class="d-none d-md-inline-block me-3">
                                 <img src="{% static 'img/favicon.png' %}" alt="Repertório" class="site-logo">
                             </a>

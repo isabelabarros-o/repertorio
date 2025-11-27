@@ -8,12 +8,25 @@
 
 <div class="container mt-4">
     <div class="busca mb-4">
-        <form method="get" class="d-flex">
-            <input type="text" name="busca" class="form-control me-2" 
-                   placeholder="Procurar" value="{{ request.GET.busca }}">
-            <button class="btn btn-primary" type="submit">Procurar</button>
+        <form method="get" class="d-flex" onsubmit="return false;">
+            <div class="search-wrapper" style="position:relative;flex:1">
+                <input id="search-input" type="text" name="q" class="form-control"
+                       placeholder="Título, resenha, tipo ou estrelas" value="{{ request.GET.q|default:'' }}"
+                       oninput="toggleClearButton()" aria-label="Pesquisar">
+
+                <button id="clear-input-btn" type="button" aria-label="Limpar pesquisa"
+                        class="btn btn-outline-secondary clear-input-btn"
+                        style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:0 8px;display:none;border-radius:4px"
+                        onclick="clearSearchInline()">&times;</button>
+            </div>
+
+            <button class="btn btn-primary ms-2" type="button" onclick="performSearch()">Procurar</button>
         </form>
     </div>
+    <style>
+        .search-wrapper input.form-control { padding-right: 42px; }
+        .clear-input-btn { height: calc(1.5em + 0.75rem + 2px); line-height:1; }
+    </style>
 
     <p class="fw-semibold mb-3">Quantidade de repertórios: 
         <span class="badge bg-primary">{{ meu_repertorio|length }}</span>
@@ -67,4 +80,36 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    function performSearch() {
+        const query = document.getElementById('search-input').value;
+        const url = new URL(window.location.href);
+        if (query && query.trim().length > 0) {
+          url.searchParams.set('q', query.trim());
+        } else {
+          url.searchParams.delete('q');
+        }
+        window.location.href = url.href;
+    }
+
+    function clearSearchInline() {
+        const input = document.getElementById('search-input');
+        input.value = '';
+        toggleClearButton();
+        const url = new URL(window.location.href);
+        url.searchParams.delete('q');
+        window.location.href = url.href;
+    }
+
+    function toggleClearButton() {
+        const input = document.getElementById('search-input');
+        const btn = document.getElementById('clear-input-btn');
+        if (!btn) return;
+        btn.style.display = input.value && input.value.trim().length > 0 ? 'inline-block' : 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', toggleClearButton);
+</script>
+
 {% endblock %}
