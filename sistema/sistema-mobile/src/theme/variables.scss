@@ -17,17 +17,14 @@
 }
 
 :root {
-  /* usa a família carregada localmente */
   --ion-font-family: 'LatoCustom', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --ion-font-family-base: var(--ion-font-family);
 
-  /* paleta principal (sobrescreve core.css) */
   --ion-color-primary: #8EC5B7;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-success: #8EC5B7;
   --ion-color-success-contrast: #ffffff;
 
-  /* modal / accents */
   --modal-bg: #FBF9F7;
   --modal-panel: #ffffff;
   --modal-accent: #8EC5B7;

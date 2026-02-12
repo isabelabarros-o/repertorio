@@ -8,7 +8,7 @@ import re
 class DurationHMField(forms.Field):
     """
     Campo de formulário personalizado que analisa HH:MM como horas e minutos em um timedelta.
-    Isso garante que o valor inserido pelo usuário '01:30' seja interpretado como 1 hora e 30 minutos (e não 1 minuto e 30 segundos, que é como o analisador DurationField do Django interpreta 'MM:SS').
+    Garante que o valor inserido pelo usuário '01:30' seja interpretado como 1 hora e 30 minutos (e não 1 minuto e 30 segundos, que é como o analisador DurationField do Django interpreta 'MM:SS').
     """
     default_error_messages = {
         'invalid': 'Formato inválido. Use HH:MM (horas:minutos).',

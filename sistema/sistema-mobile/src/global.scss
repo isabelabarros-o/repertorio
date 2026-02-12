@@ -64,21 +64,17 @@ html, body, ion-app, ion-content {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Força dentro do shadow DOM (ion-modal, ion-picker, etc.) */
 :root ::ng-deep, :host ::ng-deep {
   font-family: var(--ion-font-family-base) !important;
 }
 
-/* Override específico e com prioridade para os campos da tela de login */
 :root ::ng-deep .login-page ion-item {
-  --background: #eefaf2 !important; /* fundo verde-claro */
-  background: #eefaf2 !important;  /* fallback caso o componente pinte diretamente */
+  --background: #eefaf2 !important;
+  background: #eefaf2 !important;
   border-color: rgba(35,99,73,0.08) !important;
   box-shadow: 0 4px 14px rgba(17,54,44,0.04) !important;
 }
 
-/* forçar o input nativo dentro do ion-input/ion-textarea a ficar transparente
-   (assim o --background do ion-item aparece corretamente) */
 :root ::ng-deep .login-page ion-input::part(native),
 :root ::ng-deep .login-page ion-input::part(input),
 :root ::ng-deep .login-page ion-textarea::part(native),
@@ -87,19 +83,16 @@ html, body, ion-app, ion-content {
   color: #164d3a !important;
 }
 
-/* caso algum estilo global esteja aplicando background direto em .native-input */
 :root ::ng-deep .login-page .native-input,
 :root ::ng-deep .login-page .input-native {
   background: transparent !important;
 }
 
-/* foco */
 :root ::ng-deep .login-page ion-item:focus-within {
   box-shadow: 0 6px 20px rgba(44,168,113,0.10) !important;
   border-color: rgba(44,168,113,0.22) !important;
 }
 
-/* Override definitivo para campos da tela de login (força através do shadow DOM) */
 :root ::ng-deep .login-page ion-item.login-field,
 :root ::ng-deep .login-page ion-item.login-field .native-input,
 :root ::ng-deep .login-page ion-item.login-field .input-native,
@@ -114,7 +107,6 @@ html, body, ion-app, ion-content {
   color: #164d3a !important;
 }
 
-/* garante que o input nativo não pinte fundo por cima */
 :root ::ng-deep .login-page ion-input::part(native),
 :root ::ng-deep .login-page ion-input::part(input),
 :root ::ng-deep .login-page ion-textarea::part(native),
