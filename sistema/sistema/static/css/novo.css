@@ -1,0 +1,90 @@
+
+    /* Coloque este código no seu arquivo static/css/base.css ou em um novo arquivo */
+
+/* === ESTILOS GERAIS === */
+body {
+    background-color: var(--bg);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+}
+
+/* === CABEÇALHO E NAVEGAÇÃO === */
+/* header/menu styles will inherit global styles from base.css; keep small overrides here */
+#menu-superior header { border-bottom: 1px solid var(--border); margin-bottom: 2rem !important; }
+#menu-superior .nav-link { color: var(--ink); font-weight: 500; font-size: 1rem; }
+#menu-superior .btn-secondary { background-color: var(--ink); border-color: var(--ink); color: white; border-radius: 8px; font-weight: 500; }
+#menu-superior .btn-secondary .badge { background-color: var(--accent-2) !important; color: var(--ink) !important; }
+
+/* === FORMULÁRIO DE CADASTRO === */
+
+/* Transforma o formulário em um grid de 2 colunas */
+form.container {
+    position: relative;
+    padding-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr 340px; /* main column + fixed sidebar for photo */
+    gap: 0 2.25rem;
+    align-items: start;
+}
+
+/* Adiciona o título "Cadastre seu veículo:" usando um pseudo-elemento */
+form.container::before {
+    content: "Cadastre seu repertório:";
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+/* --- Coluna da Esquerda (Campos do Formulário) --- */
+
+/* O container dos campos ocupará a primeira coluna do grid */
+form.container .row { grid-column: 1 / 2; display:flex; flex-direction:column; }
+
+/* Força cada campo a ocupar 100% da largura da coluna da esquerda */
+form.container .row .col-6 { width: 100%; flex: 0 0 100%; max-width: 100%; margin-bottom: 1rem; }
+
+/* Estilo das labels (Marca, Modelo, etc.) */
+.form-label { color: var(--muted); margin-bottom: 0.5rem; font-weight: 600; }
+
+/* Estilo dos campos de input e select */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    height: 48px;
+    background-color: var(--card);
+    color: var(--ink);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px rgba(22,50,74,0.06);
+}
+
+/* --- Coluna da Direita (Foto) --- */
+
+/* Adiciona o quadro "Foto do Veículo" usando um pseudo-elemento */
+/* Remove pseudo-element used before; photo panel styled directly in template card */
+
+
+/* --- Botão Salvar --- */
+
+/* Posiciona o botão na coluna da esquerda, abaixo dos campos */
+form button[type="submit"] {
+    grid-column: 1 / 2;
+    background: linear-gradient(180deg, var(--accent), #74BDA9);
+    border: 1px solid transparent;
+    color: white;
+    border-radius: 25px;
+    padding: 10px 32px;
+    font-weight: 700;
+    width: auto;
+    justify-self: start;
+    margin-top: 1rem;
+}
+
+/* Photo preview card inside the right column */
+.photo-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-height: 240px; display:flex; flex-direction:column; gap:12px; align-items:center; justify-content:center; }
+.photo-card .placeholder { color: var(--muted); border-radius: 8px; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#FAFAFB; }

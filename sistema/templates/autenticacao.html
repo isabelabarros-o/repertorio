@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Login</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="{% static 'css/autenticacao.css' %}">
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="auth-header">
+  <img src="{% static 'img/patin_logo.png' %}" alt="Repertório" class="auth-logo">
+      <div class="subtitle">Seu diário de séries e filmes</div>
+    </div>
+    
+    <form action="/" method="POST">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="usuario">E-MAIL</label>
+        <input type="text" name="usuario" id="usuario" placeholder="seu@email.com">
+      </div>
+
+      <div class="form-group">
+        <label for="senha">SENHA</label>
+        <input type="password" name="senha" id="senha" placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="cta-button">
+        <span class="button-text">ENTRAR</span>
+        <span class="button-arrow">→</span>
+      </button>
+      
+      <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+    </form>
+    
+  <div class="auth-footer"></div>
+  </div>
+  
+  {% if mensagem %}
+    <div class="alert-danger" role="alert">
+      <span class="alert-icon">⚠</span>
+      {{ mensagem }}
+    </div>
+  {% endif %}
+  
+</body>
+</html>

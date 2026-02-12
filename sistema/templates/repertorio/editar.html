@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block titulo %} Edição do repertório: {{ object.nome }} {% endblock %}
+
+{% block conteudo %}
+<div class="container mt-4">
+    <form action="{% url 'editar-repertorio' object.pk %}" method="post" enctype="multipart/form-data" class="row g-4">
+        {% csrf_token %}
+
+        <div class="col-12 col-md-8">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label">Nome</label>
+                    {{ form.nome }}
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label">Tipo</label>
+                    {{ form.tipo }}
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label">Data</label>
+                    {{ form.data }}
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label">Estrelas</label>
+                    {{ form.estrela }}
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label">Duração</label>
+                    {{ form.duracao }}
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label">Temporada</label>
+                    {{ form.temporada }}
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label">Resenha</label>
+                    {{ form.resenha }}
+                </div>
+
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="{% url 'meu-repertorio' %}" class="btn btn-outline-secondary">Voltar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+                    <div class="photo-card">
+                        <label class="form-label">Foto (opcional)</label>
+                        {{ form.foto }}
+                        <div id="foto-preview" class="poster-box poster-sidebar">
+                            {% if object.foto %}
+                                <img src="{{ object.foto.url }}" alt="Foto atual" class="poster-img" />
+                            {% else %}
+                                <div class="placeholder">Preview da foto</div>
+                            {% endif %}
+                        </div>
+                    </div>
+        </div>
+
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const fileInput = document.querySelector('input[type=file][name="foto"]');
+    const preview = document.getElementById('foto-preview');
+    if(!fileInput) return;
+
+    fileInput.classList.add('form-control');
+
+    fileInput.addEventListener('change', function(ev){
+        const file = ev.target.files && ev.target.files[0];
+        if(!file) { preview.innerText = 'Preview da foto'; return; }
+        if(!file.type.startsWith('image/')) { preview.innerText = 'Arquivo selecionado não é imagem'; return; }
+        const reader = new FileReader();
+        reader.onload = function(e){
+            preview.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '220px';
+            img.style.borderRadius = '8px';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true" class="login-page">
+  <div class="login-container">
+    <div class="auth-header">
+      <img src="assets/img/patin_logo.png" alt="Repertório" class="auth-logo">
+      <div class="subtitle">Seu diário de séries e filmes</div>
+    </div>
+
+    <form (submit)="autenticarUsuario()">
+      <ion-list>
+        <ion-item>
+          <ion-input label="Usuário" type="text" name="usuario" [(ngModel)]="instancia.username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input label="Senha" type="password" name="senha" [(ngModel)]="instancia.password"></ion-input>
+        </ion-item>
+      </ion-list>
+      <ion-button expand="block" (click)="autenticarUsuario()" class="cta-button">
+        Autenticar
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

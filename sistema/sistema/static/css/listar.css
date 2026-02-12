@@ -1,0 +1,182 @@
+/* Pastel, calm design inspired by Goodrads — subtle, unisex tones */
+:root{
+    --bg: #FBF9F7;        /* very pale warm */
+    --card: #FFFFFF;      /* card background */
+    --muted: #7A8A95;     /* muted text */
+    --ink: #16324A;       /* primary text (soft navy) */
+    --accent: #8EC5B7;    /* pastel teal/green */
+    --accent-2: #F3CDA6;  /* soft peach */
+    --danger: #E39A8A;    /* warm coral (muted) */
+    --border: #E9E6E2;    /* subtle border */
+    --shadow: 0 6px 18px rgba(22,50,74,0.06);
+}
+
+/* ----- GERAL E CABEÇALHO ----- */
+body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+}
+
+header {
+    border-bottom: 1px solid var(--border);
+    background-color: transparent;
+}
+
+.nav-link {
+    color: var(--ink) !important;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* Logout / action button */
+.col-md-3 .btn-secondary{
+    background: linear-gradient(180deg, var(--ink), #10203A); /* subtle */
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(16,32,58,0.08);
+}
+
+.btn-secondary .badge{
+    background-color: var(--accent-2) !important;
+    color: var(--ink) !important;
+    top: 115% !important;
+}
+
+/* ----- ÁREA DE BUSCA ----- */
+.busca{ background: transparent; padding: 0; }
+
+.busca input[type="text"].form-control{
+    background-color: rgba(142,197,183,0.12); /* soft teal tint */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--muted);
+    padding: 10px 14px;
+    transition: box-shadow .12s ease, border-color .12s ease;
+}
+
+.busca input[type="text"].form-control:focus{
+    outline: none;
+    box-shadow: 0 6px 18px rgba(142,197,183,0.12);
+    border-color: var(--accent);
+    color: var(--ink);
+}
+
+.busca input[type="text"].form-control::placeholder{ color: #9AA6AD; }
+
+.busca .btn-primary{
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    color: white;
+    padding: 10px 18px;
+    box-shadow: none;
+}
+
+/* ----- CONTADOR ----- */
+p.fw-semibold{
+    color: var(--ink);
+    font-size: 1rem;
+    margin-top: 1.2rem;
+}
+
+p.fw-semibold .badge{
+    background: transparent !important;
+    color: var(--muted) !important;
+    font-weight: 600;
+    padding-left: 6px;
+}
+
+/* ----- CARD ----- */
+.card{
+    background-color: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    padding: 1.5rem !important;
+    height: auto;
+}
+
+/* Image placeholder (kept flexible so image can size the card) */
+.card .bg-light.text-secondary{
+    background-color: #F1F3F4 !important;
+    color: transparent !important;
+    font-size: 0;
+    position: relative;
+    border-radius: 8px;
+    width: 160px; /* poster thumbnail width */
+    height: calc(160px * (40 / 27)); /* maintain 27:40 ratio */
+    max-width: 100%;
+}
+
+.card .bg-light.text-secondary::before{
+    content: "Foto";
+    color: #96A1A6;
+    font-size: 0.95rem;
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+/* Title */
+.card-title{
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-align: left;
+    line-height: 1.25;
+    margin-bottom: 0.25rem;
+}
+
+/* Details */
+.card-body p{
+    text-align: left;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+    line-height: 1.45;
+    font-size: 0.95rem;
+}
+
+/* Action buttons area */
+.card .text-md-end{
+    display:flex; justify-content:flex-end; gap:0.6rem; align-items:center;
+}
+
+/* Buttons refined */
+.btn-outline-primary, .btn-outline-danger{
+    border-radius: 10px;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    font-weight: 700;
+    color: white !important;
+    box-shadow: none;
+    transition: transform .06s ease, opacity .06s ease;
+}
+
+.btn-outline-primary{
+    background: linear-gradient(180deg, var(--accent), #74BDA9) !important;
+}
+
+.btn-outline-primary:hover{ transform: translateY(-1px); }
+
+.btn-outline-danger{
+    background: linear-gradient(180deg, var(--danger), #D87F70) !important;
+}
+
+.btn-outline-danger:hover{ transform: translateY(-1px); }
+
+/* Small responsive tweaks */
+@media (max-width: 576px){
+    .card{ padding: 1rem !important; }
+    .card .bg-light.text-secondary{ width: 120px; height: calc(120px * (40 / 27)) !important; }
+    .col-8.col-md-6{ margin-top: 0.5rem; }
+}
+
+/* Subtle helpers */
+a { text-decoration: none; }

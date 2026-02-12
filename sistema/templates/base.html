@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}"/>
+
+    <title>{% block titulo %} Desenvolvimento webmobile {% endblock %}</title>
+
+    
+    <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/base.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
+
+    {# Page-specific CSS block; base.css provides unified styles #}
+    {% block css_local %}{% endblock %}
+    {% block javascript_local %}{% endblock %}
+</head>
+
+<body>
+    
+    <div id="menu-superior">
+        {% block menu_superior %}
+        <div class="container">
+            <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
+              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li>
+                    <a href="/repertorio" class="nav-link px-2">
+                        Meu Repertório
+                    </a>
+                </li>
+                <li>
+                    <a href="/repertorio/novo" class="nav-link px-2">
+                        Novo Repertório
+                    </a>
+                </li>
+              </ul>
+                            <a href="/" class="d-none d-md-inline-block me-3">
+                                <img src="{% static 'img/favicon.png' %}" alt="Repertório" class="site-logo">
+                            </a>
+              <div class="col-md-3 text-end">
+                <a href="/logout" type="button" class="btn btn-cinema position-relative">
+                    Logout
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-cinema">
+                        {{user}}
+                    </span>
+                </a>
+              </div>
+            </header>
+          </div>
+        {% endblock %}
+    </div>
+
+    <div id="conteudo">
+        {% block conteudo %}{% endblock %}
+    </div>
+    
+    
+</body>
+</html>

@@ -1,0 +1,124 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="title-accent">Repertório</ion-title>
+    <ion-buttons slot="end">
+      <ion-button class="logout-btn" (click)="logout()">logout</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="search-container ion-padding" style="display:flex;gap:8px;align-items:center">
+    <ion-searchbar
+      #searchbar
+      name="q"
+      placeholder="Título, resenha, tipo ou estrelas"
+      [(ngModel)]="searchQuery"
+      (ionClear)="clearSearch()"
+      showCancelButton="never"
+      style="flex:1"
+    ></ion-searchbar>
+
+    <ion-button color="primary" class="search-btn" (click)="consultarRepertorioSistemaWeb(searchQuery)">
+      <ion-icon name="search-outline" slot="start"></ion-icon>
+      Pesquisar
+    </ion-button>
+
+    <ion-button fill="clear" color="medium" aria-label="Limpar pesquisa"
+      *ngIf="searchQuery && searchQuery.length > 0"
+      (click)="clearSearch()">
+      <ion-icon name="close-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <ion-modal
+    [isOpen]="editing"
+    keepContentsMounted="true"
+    (ionModalDidDismiss)="closeEditModal()"
+  >
+    <ng-template>
+      <ion-content class="ion-padding">
+        <h2>Editar Repertório</h2>
+
+        <ion-item>
+          <ion-label position="stacked">Nome</ion-label>
+          <ion-input name="nome" [(ngModel)]="editModel.nome" placeholder="Nome"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tipo</ion-label>
+          <ion-select name="tipo" [(ngModel)]="editModel.tipo" (ionChange)="onTipoChange()">
+            <ion-select-option value="FILME">Filme</ion-select-option>
+            <ion-select-option value="SERIE">Série</ion-select-option>
+            <ion-select-option value="OUTRO">Outro</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Estrelas</ion-label>
+          <ion-select name="estrela" [(ngModel)]="editModel.estrela">
+            <ion-select-option *ngFor="let s of [1,2,3,4,5]" [value]="s">{{s}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="showDuracao">
+          <ion-label position="stacked">Duração (HH:MM:SS)</ion-label>
+          <ion-input name="duracao" [(ngModel)]="editModel.duracao" placeholder="01:30:00"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="showTemporada">
+          <ion-label position="stacked">Temporada</ion-label>
+          <ion-input name="temporada" type="number" [(ngModel)]="editModel.temporada" placeholder="1"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Resenha</ion-label>
+          <ion-textarea name="resenha" rows="4" [(ngModel)]="editModel.resenha" placeholder="Resenha"></ion-textarea>
+        </ion-item>
+
+        <div class="ion-padding-top" style="display:flex;gap:12px;justify-content:flex-end">
+          <ion-button fill="clear" (click)="closeEditModal()">Cancelar</ion-button>
+          <ion-button color="primary" (click)="saveEdit()">Salvar</ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <div *ngIf="!lista_repertorio || lista_repertorio.length === 0" class="ion-padding ion-text-center">
+    Nenhum repertório encontrado.
+  </div>
+
+  <div class="grid" *ngIf="lista_repertorio && lista_repertorio.length > 0">
+    <div class="grid-item" *ngFor="let item of lista_repertorio">
+      <div class="card">
+        <div class="poster-box">
+          <img *ngIf="getFotoUrl(item) as fotoUrl; else noFoto" [src]="fotoUrl" class="poster-img" />
+          <ng-template #noFoto><div class="placeholder">Sem foto</div></ng-template>
+        </div>
+        <div class="card-body">
+          <div class="card-title">{{ item.nome }}</div>
+          <p class="muted"><strong>Tipo:</strong> {{ item.get_tipo_display || item.tipo }}</p>
+          <p class="muted"><strong>Data:</strong> {{ item.data | date:'dd/MM/yyyy' }}</p>
+          <p class="muted"><strong>Estrelas:</strong> {{ item.get_estrela_display || item.estrela }}</p>
+          <p *ngIf="item.temporada"><strong>Temporada:</strong> {{ item.temporada }}</p>
+          <p *ngIf="item.duracao"><strong>Duração:</strong> {{ formatDuration(item.duracao) }}</p>
+          <p class="muted">{{ item.resenha }}</p>
+
+          <div class="card-actions">
+            <ion-button fill="clear" color="primary" (click)="openEditModal(item)">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              Editar
+            </ion-button>
+
+            <ion-button fill="clear" color="danger" (click)="excluirRepertorio(item.id)">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Apagar
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

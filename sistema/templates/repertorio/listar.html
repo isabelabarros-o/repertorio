@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load static %}
+{% load duration_tags %}
+
+{% block titulo %} Listagem de repertórios {% endblock %}
+
+{% block conteudo %}
+
+<div class="container mt-4">
+    <div class="busca mb-4">
+        <form method="get" class="d-flex" onsubmit="return false;">
+            <div class="search-wrapper" style="position:relative;flex:1">
+                <input id="search-input" type="text" name="q" class="form-control"
+                       placeholder="Título, resenha, tipo ou estrelas" value="{{ request.GET.q|default:'' }}"
+                       oninput="toggleClearButton()" aria-label="Pesquisar">
+
+                <button id="clear-input-btn" type="button" aria-label="Limpar pesquisa"
+                        class="btn btn-outline-secondary clear-input-btn"
+                        style="position:absolute;right:6px;top:50%;transform:translateY(-50%);padding:0 8px;display:none;border-radius:4px"
+                        onclick="clearSearchInline()">&times;</button>
+            </div>
+
+            <button class="btn btn-primary ms-2" type="button" onclick="performSearch()">Procurar</button>
+        </form>
+    </div>
+    <style>
+        .search-wrapper input.form-control { padding-right: 42px; }
+        .clear-input-btn { height: calc(1.5em + 0.75rem + 2px); line-height:1; }
+    </style>
+
+    <p class="fw-semibold mb-3">Quantidade de repertórios: 
+        <span class="badge bg-primary">{{ meu_repertorio|length }}</span>
+    </p>
+
+    <div class="row g-3">
+        {% for item in meu_repertorio %}
+    <div class="col-12 col-sm-6 col-md-4">
+            <div class="card p-3">
+                {% comment %} Poster on top, info below for stronger emphasis on image {% endcomment %}
+                <div class="d-flex justify-content-center mb-3">
+                    {% if item.foto %}
+                        <div class="poster-box">
+                            <img src="{{ item.foto.url }}" class="poster-img" alt="Foto do repertório">
+                        </div>
+                    {% else %}
+                        <div class="poster-box" style="background:#F1F3F4;">
+                            <div class="placeholder">Sem foto</div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-2">{{ item.nome }}</h5>
+                    <p class="mb-1"><strong>Tipo:</strong> {{ item.get_tipo_display }}</p>
+                    <p class="mb-1"><strong>Data:</strong> {{ item.data|date:"d/m/Y" }}</p>
+                    <p class="mb-1"><strong>Estrelas:</strong> {{ item.get_estrela_display }}</p>
+                    {% if item.tipo == 'SERIE' and item.temporada %}
+                        <p class="mb-1"><strong>Temporada:</strong> {{ item.temporada }}</p>
+                    {% endif %}
+                    {% if item.duracao %}
+                        <p class="mb-1"><strong>Duração:</strong> {{ item.duracao|hhmm }}</p>
+                    {% endif %}
+                    <p class="mt-2 text-muted">{{ item.resenha }}</p>
+                </div>
+
+                <div class="card-footer bg-transparent border-0">
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-sm btn-outline-primary me-2" href="{% url 'editar-repertorio' item.pk %}">Editar</a>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'deletar-repertorio' item.pk %}" onclick="return confirm('Tem certeza que deseja apagar este repertório?')">Apagar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                Nenhum repertório cadastrado.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function performSearch() {
+        const query = document.getElementById('search-input').value;
+        const url = new URL(window.location.href);
+        if (query && query.trim().length > 0) {
+          url.searchParams.set('q', query.trim());
+        } else {
+          url.searchParams.delete('q');
+        }
+        window.location.href = url.href;
+    }
+
+    function clearSearchInline() {
+        const input = document.getElementById('search-input');
+        input.value = '';
+        toggleClearButton();
+        const url = new URL(window.location.href);
+        url.searchParams.delete('q');
+        window.location.href = url.href;
+    }
+
+    function toggleClearButton() {
+        const input = document.getElementById('search-input');
+        const btn = document.getElementById('clear-input-btn');
+        if (!btn) return;
+        btn.style.display = input.value && input.value.trim().length > 0 ? 'inline-block' : 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', toggleClearButton);
+</script>
+
+{% endblock %}

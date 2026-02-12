@@ -1,0 +1,113 @@
+/* Login page styles adapted from web autenticacao.css */
+:root {
+  --auth-logo-max: 500px;
+  --auth-logo-mobile: 180px;
+}
+
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: transparent;
+
+  .login-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+    box-sizing: border-box;
+  }
+
+  ion-item {
+    --border-radius: 10px;
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(35,99,73,0.08);
+    box-shadow: 0 4px 14px rgba(17,54,44,0.04);
+  }
+
+  /* cor específica para os campos de usuário/senha */
+  ion-item.login-field,
+  ion-item.login-field ion-input::part(native),
+  ion-item.login-field ion-textarea::part(native) {
+    --background: var(--accent-2, #e6f2ff) !important;
+    background: var(--accent-2, #e6f2ff) !important;
+    color: var(--modal-text, #164d3a) !important;
+  }
+
+  /* texto/placeholder */
+  ion-input::part(native) {
+    color: #164d3a; /* texto escuro esverdeado */
+  }
+  ion-input::part(native)::-webkit-input-placeholder,
+  ion-input::part(native)::-moz-placeholder,
+  ion-input::part(native):-ms-input-placeholder {
+    color: rgba(22,77,58,0.45); /* placeholder mais suave */
+  }
+
+  /* foco mais visível */
+  ion-item:focus-within {
+    box-shadow: 0 6px 20px rgba(44,168,113,0.10);
+    border-color: rgba(44,168,113,0.22);
+  }
+
+  /* botão principal levemente coordenado */
+  .cta-button {
+    --background: var(--ion-color-primary, #2ca871);
+    --color: #fff;
+    border-radius: 10px;
+  }
+
+  /* header/logo ajuste */
+  .auth-header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+}
+
+.login-container {
+  background: #FFFFFF;
+  border: 1px solid #E9E6E2;
+  padding: 20px;
+  max-width: calc(var(--auth-logo-max) + 48px);
+  margin: 32px auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(22,50,74,0.04);
+}
+
+.auth-header {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  margin-bottom:18px;
+}
+
+.auth-logo {
+  display:block;
+  margin: 0 0 10px 0;
+  height: auto;
+  width: 100%;
+  max-width: var(--auth-logo-max);
+  object-fit: contain;
+}
+
+.login-container .auth-logo { max-height: 520px; }
+
+.subtitle { text-align:center; font-size:0.9rem; color:#7A8A95; margin-bottom:18px; }
+
+ion-list { margin: 0; }
+ion-item { --padding-start: 8px; --inner-padding-end: 8px; }
+
+.cta-button {
+  --background: #8EC5B7;
+  --color: #fff;
+  --border-radius: 8px;
+}
+
+@media (max-width: 480px) {
+  .login-container { width: 92%; padding-left: 12px; padding-right: 12px; max-width: none; }
+  .auth-logo { max-width: var(--auth-logo-mobile); }
+}

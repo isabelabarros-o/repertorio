@@ -1,0 +1,35 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+
+@font-face {
+  font-family: 'LatoCustom';
+  src: url('../assets/fonts/Lato-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'LatoCustom';
+  src: url('../assets/fonts/Lato-Black.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ion-font-family: 'LatoCustom', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ion-font-family-base: var(--ion-font-family);
+
+  --ion-color-primary: #8EC5B7;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-success: #8EC5B7;
+  --ion-color-success-contrast: #ffffff;
+
+  --modal-bg: #FBF9F7;
+  --modal-panel: #ffffff;
+  --modal-accent: #8EC5B7;
+  --modal-accent-dark: #1f7a55;
+  --modal-text: #164d3a;
+  --modal-muted: #5b7b6a;
+  --modal-border: rgba(35, 99, 73, 0.08);
+}

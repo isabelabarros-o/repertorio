@@ -1,0 +1,135 @@
+/* Unified base.css: pastel primary theme with subtle cinematic accents */
+
+/* Importa a mesma família usado no mobile e define variável global */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+
+:root {
+
+  /* Pastel theme variables */
+  --bg: #FBF9F7;        /* very pale warm */
+  --card: #FFFFFF;      /* card background */
+  --muted: #7A8A95;     /* muted text */
+  --ink: #16324A;       /* primary text (soft navy) */
+  --accent: #8EC5B7;    /* pastel teal/green */
+  --accent-2: #F3CDA6;  /* soft peach */
+  --danger: #E39A8A;    /* warm coral (muted) */
+  --border: #E9E6E2;    /* subtle border */
+  --shadow: 0 6px 18px rgba(22,50,74,0.06);
+
+  --site-font: 'Lato', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Reset and base sizing */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--site-font);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ajustes tipográficos padrão para combinar com o mobile */
+h1, h2, h3, h4, h5, h6, .title, .card-title {
+  font-family: var(--site-font);
+  font-weight: 700;
+}
+p, span, label, input, textarea, a {
+  font-family: var(--site-font);
+}
+
+/* Header / Navigation */
+.nav-link { color: var(--ink) !important; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; font-size:1rem; letter-spacing:0.2px; transition: color .18s ease, transform .12s ease; position:relative; }
+.nav-link::after { content:""; position:absolute; bottom:-5px; left:50%; transform:translateX(-50%); width:0; height:2px; background:var(--accent); transition: width .2s ease; }
+.nav-link:hover { color:var(--accent) !important; transform:translateY(-1px); }
+.nav-link:hover::after { width:50%; }
+
+/* Buttons */
+.btn-cinema { background: linear-gradient(180deg, var(--accent), #74BDA9); color: white; border:1px solid transparent; font-weight:700; padding:8px 14px; border-radius:10px; transition: transform .12s ease, box-shadow .12s ease; }
+.btn-cinema:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.badge-cinema { background: var(--accent-2) !important; color: var(--ink) !important; font-weight:600; padding: 0.25rem 0.5rem; border-radius: 8px; }
+
+/* Replace Bootstrap's default primary blue with the site's green-accent for harmony */
+.btn-primary {
+  background: linear-gradient(180deg, var(--accent), #66B89F) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: var(--shadow);
+}
+.btn-primary:hover { transform: translateY(-1px); }
+
+/* Badge that uses bg-primary (Bootstrap utility) */
+.badge.bg-primary {
+  background-color: var(--accent) !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* Outline primary buttons should use the green accent for border/text */
+.btn-outline-primary {
+  color: var(--accent) !important;
+  border-color: rgba(142,197,183,0.35) !important;
+}
+.btn-outline-primary:hover {
+  background: rgba(142,197,183,0.06) !important;
+}
+
+/* Content Area */
+#conteudo { position: relative; z-index: 10; padding: 2rem 0; }
+.container { position: relative; z-index: 10; }
+
+/* Cards and listing */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(22,50,74,0.04);
+  display: block;
+  width: 100%;
+}
+.card .card-title { color: var(--ink); }
+
+/* Poster ratio box: fixed poster aspect-ratio 27:40 (w:h) */
+.poster-box {
+  aspect-ratio: 27 / 40;
+  width: 160px; /* default poster width */
+  max-width: 100%;
+  background: var(--card);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.poster-box.poster-sidebar { width: 100%; max-width: 320px; }
+.poster-img { width: 100%; height: 100%; object-fit: cover; display:block; }
+
+/* preview helper for dashed upload area */
+.poster-preview { min-height: 160px; border: 1px dashed var(--border); background: #fafafa; color: var(--muted); display:flex; align-items:center; justify-content:center; }
+
+.busca .form-control { border-radius: 10px; border:1px solid var(--border); }
+.busca .btn { border-radius: 10px; }
+
+/* Site logo */
+.site-logo { height: 36px; width: auto; display: inline-block; }
+.auth-logo { height: 84px; width: auto; display: block; margin: 0 auto 12px; }
+
+@media (max-width: 768px) {
+  .nav-link { font-size: .95rem; }
+}
+
+@media (min-width: 768px) {
+  /* medium screens show larger posters */
+  .poster-box { width: 200px; }
+}
+
+@media (min-width: 992px) {
+  .poster-box { width: 220px; }
+}
