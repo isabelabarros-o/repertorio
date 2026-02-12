@@ -21,7 +21,7 @@ O projeto utiliza uma arquitetura full-stack composta por:
 
 * **`/sistema`**: Contém a lógica de backend, modelos de dados e API desenvolvida em Django.
 * **`/webmobile`**: Contém o código da aplicação mobile/front-end desenvolvida com Ionic.
-* **`/css` & `/js**`: Ativos estáticos para a interface web.
+* **`/css` & `/js`**: Ativos estáticos para a interface web.
 
 ---
 
